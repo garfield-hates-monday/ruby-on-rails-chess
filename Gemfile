@@ -62,5 +62,3 @@ group :development, :test do
   gem 'capybara'
   gem 'database_cleaner'
 end
-
-gem 'rubocop', '~> 0.76.0', require: false
