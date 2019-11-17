@@ -1,5 +1,5 @@
-FactoryGirl.define do
-  factory :game do
-    
+FactoryBot.define do 
+  factory :game, parent: :user do
+    name { "Awesome Game" }
   end
 end
