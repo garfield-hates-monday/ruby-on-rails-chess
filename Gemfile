@@ -71,3 +71,6 @@ gem 'jquery-rails'
 
 # Devise Gem
 gem 'devise'
+
+# Simple Form
+gem 'simple_form'
