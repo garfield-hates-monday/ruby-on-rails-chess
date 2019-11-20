@@ -75,5 +75,6 @@ gem 'devise'
 # Simple Form
 gem 'simple_form'
 
-# OmniAuth using Google
+# OmniAuth Providers
 gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
