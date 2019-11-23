@@ -22,5 +22,26 @@ border-color: #e4e4e4 #bebebd #bebebd #e4e4e4;
 margin-top: 10px;
 margin-bottom: 15px;
 padding: 20px;
+text-align: center;
 }
+
+.black, .white {
+  height: 60px;
+  width: 60px;
+  border:1px solid;
+}
+
+.black {
+  background-color: black;
+}
+
+.white {
+  background-color: white;
+}
+
+.chessboard {
+  align-content: center;
+  display: inline-block;
+}
+
 
