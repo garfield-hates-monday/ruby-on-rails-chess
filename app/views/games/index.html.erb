@@ -1,0 +1,8 @@
+
+<h1>Available Games</h1>
+<% @games.each do |game| %>
+  <div class="booyah-box">
+    <h3><%= game.name %></h3>
+    <h5><%= game.white_user_id %>
+  </div>
+<% end %>
