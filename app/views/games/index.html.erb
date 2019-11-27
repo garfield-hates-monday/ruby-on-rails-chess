@@ -1,0 +1,19 @@
+<h1>Listing Active Games</h1>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>State</th>
+    <th>Black Player</th>
+    <th>Join</th>
+  </tr>
+
+
+  <% @games.each do |game| %>
+    <tr>
+      <td><%= game.name %></td>
+      <td><%= game.state %></td>
+      <td><%= game.black_user_id %></td>
+      <td><%= link_to 'Join Game', game_url(game), method: :put %></td>
+    </tr>
+  <% end %>
+</table>
