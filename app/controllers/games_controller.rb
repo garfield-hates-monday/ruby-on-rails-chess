@@ -20,6 +20,16 @@ class GamesController < ApplicationController
 
   end
 
+  def index
+    @games = Game.all
+  end
+
+  def update
+    @game = Game.find(params[:id])
+    @game.update(black_user_id: current_user.id)
+    redirect_to games_path
+  end
+
   private
 
   def game_params
