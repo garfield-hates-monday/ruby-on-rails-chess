@@ -2,85 +2,12 @@
   <h1>Good Luck!</h1>
   <br>
   <div class="chessboard">
-    <div class="row row-1">
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-    </div>
-    <div class="row row-2">
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-    </div>
-    <div class="row row-3">
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-    </div>
-    <div class="row row-4">
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-    </div>
-    <div class="row row-5">
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-    </div>
-    <div class="row row-6">
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-    </div>
-    <div class="row row-7">
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-    </div>
-    <div class="row row-8">
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-      <div class="white"></div>
-      <div class="black"></div>
-    </div>
+    <% (1..8).each do |y_position| %>
+      <div class="row row-<%= y_position %>">
+        <% (1..8).each do |x_position| %>
+          <div data-x-position="<%= x_position %>"  data-y-position="<%= y_position %>" class="<%= y_position % 2 == x_position % 2 ? "white" : "black" %>"></div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
