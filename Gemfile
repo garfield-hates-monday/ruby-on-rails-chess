@@ -78,3 +78,5 @@ gem 'simple_form'
 # OmniAuth Providers
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
+
+gem "font-awesome-rails"
