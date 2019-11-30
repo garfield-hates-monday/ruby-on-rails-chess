@@ -1,5 +1,5 @@
 FactoryBot.define do 
-  factory :game, parent: :user do
+  factory :game do
     name { "Awesome Game" }
   end
 end
