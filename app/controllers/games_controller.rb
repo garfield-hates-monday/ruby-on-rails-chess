@@ -17,7 +17,10 @@ class GamesController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  end
 
+  def active_games
+    @game = 
   end
 
   def index

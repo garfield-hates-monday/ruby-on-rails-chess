@@ -1,19 +1,51 @@
-<h1>Listing Active Games</h1>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>State</th>
-    <th>Black Player</th>
-    <th>Join</th>
-  </tr>
-
-
-  <% @games.each do |game| %>
+<div class="row">
+<div class="col booyah-box">  
+  <h1>Listing Active Games</h1>
+  <table>
     <tr>
-      <td><%= game.name %></td>
-      <td><%= game.state %></td>
-      <td><%= game.black_user_id %></td>
-      <td><%= link_to 'Join Game', game_url(game), method: :put %></td>
+      <th>Name</th>
+      <th>State</th>
+      <th>Opponent</th>
+      <th>Join</th>
     </tr>
-  <% end %>
-</table>
+
+
+    <% @games.each do |game| %>
+      <%if game.black_user_id == current_user.id || game.white_user_id == current_user.id %>
+        <tr>
+          <td><%= game.name %></td>
+          <td><%= game.state %></td>
+          <% if current_user.id == game.white_user_id %>
+            <td><%= game.black_user_id %></td>
+          <% else %>
+            <td><%= game.white_user_id %></td>
+          <% end %>
+
+          <td><%= link_to 'Go to Game', game_path(game), method: :get %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+</div>
+<div class="col booyah-box">
+  <h1>Listing Available Games</h1>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>State</th>
+      <th>Black Player</th>
+      <th>Join</th>
+    </tr>
+
+
+    <% @games.each do |game| %>
+      <tr>
+        <td><%= game.name %></td>
+        <td><%= game.state %></td>
+        <td><%= game.black_user_id %></td>
+        <td><%= link_to 'Join Game', game_url(game), method: :put %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+</div>
