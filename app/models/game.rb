@@ -63,11 +63,11 @@ class Game < ApplicationRecord
   end
 
   def white_player
-    user.find_by_id(white_user_id)
+    User.find_by_id(white_user_id)
   end
 
   def black_player
-    user.find_by_id(black_user_id)
+    User.find_by_id(black_user_id)
   end
 
 end
