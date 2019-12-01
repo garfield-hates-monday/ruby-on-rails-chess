@@ -59,7 +59,6 @@ class Game < ApplicationRecord
 
       #Queen
       Queen.create(game_id: id, white: false, x_position: 4, y_position: 1, user_id: black_user_id, name: "Queen_black")
-    end
   end
 
   def white_player
