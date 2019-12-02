@@ -7,12 +7,10 @@ class Piece < ApplicationRecord
     
     if opposing_piece.present? && opposing_piece.color != color
       opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
-      update_attributes(x_position: x, y_position: y)
-    elsif opposing_piece.present? == false
-      update_attributes(x_position: x, y_position: y)
-    else
+    elsif opposing_piece.present?
       return 'invalid move'
     end
+    update_attributes(x_position: x, y_position: y)
   end
 
   def is_obstructed?(new_x, new_y)
@@ -74,17 +72,17 @@ class Piece < ApplicationRecord
     game.Piece.where(x: x_current, y: y_current).present?
   end
 
-  def color
-    white? ? 'white' : 'black'
-  end
+  # def color
+  #   white? ? 'white' : 'black'
+  # end
 
-  def white?
-    white
-  end
+  # def white?
+  #   white
+  # end
 
-  def black?
-    !white
-  end
+  # def black?
+  #   !white
+  # end
 
 end
 

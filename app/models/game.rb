@@ -1,6 +1,6 @@
 class Game < ApplicationRecord
+  has_many :users
   has_many :pieces, :dependent => :destroy
-
   after_create :populate_game
 
   def populate_game
@@ -67,3 +67,4 @@ class Game < ApplicationRecord
     User.find_by_id(black_user_id)
   end
 end
+
