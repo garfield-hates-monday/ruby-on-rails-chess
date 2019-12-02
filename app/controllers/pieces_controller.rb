@@ -9,7 +9,7 @@ class PiecesController < ApplicationController
   def update
     @piece = Piece.find_by_id(params[:id])
     @game = @piece.game
-    @piece.move_to!(:x_position, :y_position)
+    @piece.move_to!(x_position, y_position)
     redirect_to game_url(@game)
   end
 end
