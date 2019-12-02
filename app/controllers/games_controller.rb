@@ -16,7 +16,7 @@ class GamesController < ApplicationController
     @game.save
 
     if @game.valid?
-      redirect_to root_path
+      redirect_to game_path(@game)
     else
       render :new, status: :unprocessable_entity
     end
@@ -30,13 +30,13 @@ class GamesController < ApplicationController
   def update
     @game = Game.find(params[:id])
     @game.update(black_user_id: current_user.id)
-    redirect_to games_path
+    redirect_to game_path
   end
 
   private
 
   def game_params
-    params.require(:game).permit(:name)
+    params.require(:game).permit(:name, :white_user_id, :black_user_id)
   end
   
 end

@@ -1,4 +1,5 @@
 class Game < ApplicationRecord
+  has_many :users
   has_many :pieces, :dependent => :destroy
   after_create :populate_game
 
