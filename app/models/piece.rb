@@ -1,4 +1,5 @@
 class Piece < ApplicationRecord
+  self.inheritance_column = nil
   belongs_to :game
 
   def move_to!(x, y)
@@ -71,6 +72,18 @@ class Piece < ApplicationRecord
 
   def occupied?(x_current, y_current)
     game.Piece.where(x: x_current, y: y_current).present?
+  end
+
+  def color
+    white? ? 'white' : 'black'
+  end
+
+  def white?
+    white
+  end
+
+  def black?
+    !white
   end
 
 end
