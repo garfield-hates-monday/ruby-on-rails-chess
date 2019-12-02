@@ -2,6 +2,19 @@ class Piece < ApplicationRecord
   self.inheritance_column = nil
   belongs_to :game
 
+  def move_to!(x, y)
+    opposing_piece = game.pieces.find_by(x_position: x, y_position: y)
+    
+    if opposing_piece.present? && opposing_piece.color != color
+      opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
+      update_attributes(x_position: x, y_position: y)
+    elsif opposing_piece.present? == false
+      update_attributes(x_position: x, y_position: y)
+    else
+      return 'invalid move'
+    end
+  end
+
   def is_obstructed?(new_x, new_y)
     direction = move_direction(new_x, new_y)
     if direction == 'horizontal'
