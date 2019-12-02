@@ -12,7 +12,7 @@ RSpec.describe GamesController, type: :controller do
   describe "games#create action" do
     it "should successfully create a new game in our database" do
       post :create, params: { game: { name: 'Test Game' } }
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to game_path(Game.last.id)
       game = Game.last
       expect(game.name).to eq("Test Game")
     end
