@@ -1,6 +1,6 @@
 class Piece < ApplicationRecord
+  self.inheritance_column = nil
   belongs_to :game
-  belongs_to :user
 
   def is_obstructed?(new_x, new_y)
     direction = move_direction(new_x, new_y)
