@@ -1,17 +1,17 @@
 <div class="booyah-box">
   <h1>List of Available Games</h1>
   <div class="booyah-box">
-  <% if @active_games.present? %>
-  <h2>Active Games</h2>
-  <% end %>
-  <br>
-    <% @active_games.each do |game| %>
-        <p>
-          <% white_player = User.find_by(id: game.white_user_id) %>
-          
-          <% end %>
-        </p>
+    <% if @active_games.present? %>
+    <h2>Active Games</h2>
     <% end %>
+    <br>
+      <% @active_games.each do |game| %>
+          <p>
+            <% white_player = User.find_by(id: game.white_user_id) %>
+            
+          
+          </p>
+      <% end %>
   </div>
   <div class="booyah-box">
     <% if @open_games.present? %>
