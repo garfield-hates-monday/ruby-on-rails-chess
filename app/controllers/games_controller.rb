@@ -6,6 +6,7 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find_by_id(params[:id])
+    @pieces = @game.pieces.all
     return render_not_found if @game.blank?
   end
 
