@@ -16,7 +16,6 @@ RSpec.describe GamesController, type: :controller do
       game = Game.last
       expect(game.name).to eq("Test Game")
     end
-
     it "should properly deal with validation errors" do
 
     end
