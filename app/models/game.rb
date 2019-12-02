@@ -1,5 +1,4 @@
 class Game < ApplicationRecord
-  validates :name, presence: true
-  has_many :pieces
+  has_many :pieces, dependent: false
 
 end

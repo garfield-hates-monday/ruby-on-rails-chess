@@ -16,11 +16,5 @@ RSpec.describe GamesController, type: :controller do
       game = Game.last
       expect(game.name).to eq("Test Game")
     end
-
-    it "should properly deal with validation errors" do
-      post :create, params: { game: { name: '' } }
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(Game.count).to eq Game.count
-    end
   end
 end

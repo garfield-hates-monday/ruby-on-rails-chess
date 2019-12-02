@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many :pieces
+  has_many :games, dependent: false
 
   # OmniAuth Helper Function
   def self.from_omniauth(auth)
