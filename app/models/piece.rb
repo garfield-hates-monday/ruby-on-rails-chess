@@ -72,17 +72,17 @@ class Piece < ApplicationRecord
     game.Piece.where(x: x_current, y: y_current).present?
   end
 
-  def color
-    white? ? 'white' : 'black'
-  end
+  # def color
+  #   white? ? 'white' : 'black'
+  # end
 
-  def white?
-    white
-  end
+  # def white?
+  #   white
+  # end
 
-  def black?
-    !white
-  end
+  # def black?
+  #   !white
+  # end
 
 end
 
