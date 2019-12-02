@@ -1,4 +1,5 @@
 class Piece < ApplicationRecord
+  self.inheritance_column = nil
   belongs_to :game
 
   def move_to!(x, y)

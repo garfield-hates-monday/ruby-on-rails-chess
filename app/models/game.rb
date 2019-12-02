@@ -1,64 +1,61 @@
 class Game < ApplicationRecord
-  has_many :pieces, dependent: false
-  validates :name, presence: true
-  has_many :users
+  has_many :pieces, :dependent => :destroy
   after_create :populate_game
 
   def populate_game
     # WHITE PIECES
       # Pawns
       (1..8).each do |x_position|
-        Pawn.create(game_id: id, white: true, x_position: x_position, y_position: 7, user_id: white_user_id, name: "Pawn_white")
+        Pawn.create(game_id: self.id, color: 'white', x_position: x_position, y_position: 7, user_id: white_user_id, type: 'pawn')
       end
 
       # Rooks
       [1, 8].each do |x_position|
-        Rook.create(game_id: id, white: true, x_position: x_coord, y_position: 8, user_id: white_user_id, name: "Rook_white")
+        Rook.create(game_id: id, color: 'white', x_position: x_position, y_position: 8, user_id: white_user_id, type: "rook")
       end
 
       # Knights
       [2, 7].each do |x_position|
-        Knight.create(game_id: id, white: true, x_position: x_position, y_position: 8, user_id: white_user_id, name: "Knight_white")
+        Knight.create(game_id: id, color: 'white', x_position: x_position, y_position: 8, user_id: white_user_id, type: "knight")
       end
 
       #Bishops
       [3, 6].each do |x_position|
-        Bishop.create(game_id: id, white: true, x_position: x_position, y_position: 8, user_id: white_user_id, name: "Bishop_white")
+        Bishop.create(game_id: id, color: 'white', x_position: x_position, y_position: 8, user_id: white_user_id, type: "bishop")
       end
 
       #King
-      King.create(game_id: id, white: true, x_position: 5, y_position: 8, user_id: white_user_id, name: "King_white")
+      King.create(game_id: id, color: 'white', x_position: 5, y_position: 8, user_id: white_user_id, type: "king")
 
       #Queen
-      Queen.create(game_id: id, white: true, x_position: 4, y_position: 8, user_id: white_user_id, name: "Queen_white")
+      Queen.create(game_id: id, color: 'white', x_position: 4, y_position: 8, user_id: white_user_id, type: "queen")
 
     # BLACK PIECES
       # Pawns
       (1..8).each do |x_position|
-        Pawn.create(game_id: id, white: false, x_position: x_position, y_position: 2, user_id: black_user_id, name: "Pawn_black")
+        Pawn.create(game_id: id, color: 'black', x_position: x_position, y_position: 2, user_id: black_user_id, type: "pawn")
       end
 
       # Rooks
       [1, 8].each do |x_position|
-        Rook.create(game_id: id, white: false, x_position: x_position, y_position: 1, user_id: black_user_id, name: "Rook_black")
+        Rook.create(game_id: id, color: 'black', x_position: x_position, y_position: 1, user_id: black_user_id, type: "rook")
       end
 
       # Knights
       [2, 7].each do |x_position|
-        Knight.create(game_id: id, white: false, x_position: x_position, y_position: 1, user_id: black_player_user_id, name: "Knight_black")
+        Knight.create(game_id: id, color: 'black', x_position: x_position, y_position: 1, user_id: black_user_id, type: "knight")
       end
 
       #Bishops
       [3, 6].each do |x_position|
-        Bishop.create(game_id: id, white: false, x_position: x_position, y_position: 1, user_id: black_player_user_id, name: "Bishop_black")
+        Bishop.create(game_id: id, color: 'black', x_position: x_position, y_position: 1, user_id: black_user_id, type: "bishop")
       end
 
       #King
-      King.create(game_id: id, white: false, x_position: 5, y_position: 1, user_id: black_user_id, name: "King_black")
+      King.create(game_id: id, color: 'black', x_position: 5, y_position: 1, user_id: black_user_id, type: "king")
 
       #Queen
-      Queen.create(game_id: id, white: false, x_position: 4, y_position: 1, user_id: black_user_id, name: "Queen_black")
-    end
+      Queen.create(game_id: id, color: 'black', x_position: 4, y_position: 1, user_id: black_user_id, type: "queen")
   end
 
   def white_player
@@ -69,3 +66,4 @@ class Game < ApplicationRecord
     User.find_by_id(black_user_id)
   end
 end
+
