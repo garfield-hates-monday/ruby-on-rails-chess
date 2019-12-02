@@ -16,6 +16,7 @@ RSpec.describe Piece, type: :model do
       king = King.create( :x_position => 4, :y_position => 1, :color => "white" )
       expect(king.valid_move?(9,9)).to eq false
     end
+  end
     
    describe '#move_to!' do
     let(:game) { Game.create! }
@@ -26,8 +27,7 @@ RSpec.describe Piece, type: :model do
       expect(piece.y_position).to eq(1)
       expect(piece.x_position).to eq(1)
     end
-   end
-
+   
     it 'should be able to capture opposing piece' do
       opposing_piece = Piece.create!(x_position: 0, y_position: 1, game: game, color: 'black')
 
@@ -53,4 +53,5 @@ RSpec.describe Piece, type: :model do
       expect(piece.x_position).to eq(0)
       expect(piece.y_position).to eq(0)
     end
+  end
 end
