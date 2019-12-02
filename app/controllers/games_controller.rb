@@ -12,7 +12,7 @@ class GamesController < ApplicationController
 
   def create
     @game = Game.create(game_params)
-    @game.white_user_id = current_user
+    @game.white_user_id = current_user.id
     @game.save
 
     if @game.valid?
@@ -24,7 +24,8 @@ class GamesController < ApplicationController
   end
 
   def index
-    @games = Game.all
+    @open_games = Game.where(black_user_id: nil).where.not(white_user_id: current_user.id).first(15)
+    @active_games = Game.where.not(white_user_id: nil).where.not(black_user_id: nil).where(winner_user_id: nil)
   end
 
   def update
