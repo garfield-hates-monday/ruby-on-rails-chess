@@ -12,7 +12,7 @@ class GamesController < ApplicationController
 
   def create
     @game = Game.create(game_params)
-    @game.white_user_id = current_user.id
+    @game.white_user_id = current_user
     @game.save
 
     if @game.valid?
@@ -30,7 +30,7 @@ class GamesController < ApplicationController
 
   def update
     @game = Game.find(params[:id])
-    @game.update(black_user_id: current_user.id)
+    @game.update(black_user_id: current_user)
     redirect_to game_path
   end
 
