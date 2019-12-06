@@ -1,6 +1,17 @@
 class Piece < ApplicationRecord
+  self.inheritance_column = nil
   belongs_to :game
-  belongs_to :user
+
+  def move_to!(x, y)
+    opposing_piece = game.pieces.find_by(x_position: x, y_position: y)
+    
+    if opposing_piece.present? && opposing_piece.color != color
+      opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
+    elsif opposing_piece.present?
+      return 'invalid move'
+    end
+    update_attributes(x_position: x, y_position: y)
+  end
 
   def is_obstructed?(new_x, new_y)
     direction = move_direction(new_x, new_y)
@@ -60,6 +71,26 @@ class Piece < ApplicationRecord
   def occupied?(x_current, y_current)
     game.Piece.where(x: x_current, y: y_current).present?
   end
+
+  def x_difference(x)
+    x_difference = (x_position - x).abs
+  end
+
+  def y_difference(y)
+    y_difference = (y_position - y).abs
+  end
+
+  # def color
+  #   white? ? 'white' : 'black'
+  # end
+
+  # def white?
+  #   white
+  # end
+
+  # def black?
+  #   !white
+  # end
 
 end
 
