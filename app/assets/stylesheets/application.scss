@@ -15,7 +15,11 @@
  @import "font-awesome";
 
 .navbar {
-  background-color: black;
+  background-color: #808080;
+}
+
+a {
+  color: black;
 }
 
 .booyah-box {
@@ -31,8 +35,8 @@
 }
 
 .black, .white {
-  height: 60px;
-  width: 60px;
+  height: 70px;
+  width: 70px;
   border:1px solid;
 }
 
@@ -53,4 +57,8 @@
   text-align: center;
 }
 
+#footer {
+  background-color: #808080;
+  padding: 10px;
+}
 
