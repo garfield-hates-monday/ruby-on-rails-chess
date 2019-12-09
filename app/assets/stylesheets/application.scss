@@ -18,6 +18,17 @@
   background-color: black;
 }
 
+.avail-games {
+  text-align: center;
+  background: white;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+body {
+  background: image_url('5-dots.png');
+}
+
 .booyah-box {
   -moz-box-shadow: 1px 1px 2px 0 #d0d0d0;
   -webkit-box-shadow: 1px 1px 2px 0 #d0d0d0;
@@ -27,7 +38,7 @@
   border-color: #e4e4e4 #bebebd #bebebd #e4e4e4;
   margin-top: 10px;
   margin-bottom: 15px;
-  padding: 40px;
+  padding: 30px;
 }
 
 .black, .white {
