@@ -72,6 +72,14 @@ class Piece < ApplicationRecord
     game.Piece.where(x: x_current, y: y_current).present?
   end
 
+  def x_difference(x)
+    x_difference = (x_position - x).abs
+  end
+
+  def y_difference(y)
+    y_difference = (y_position - y).abs
+  end
+
   # def color
   #   white? ? 'white' : 'black'
   # end
