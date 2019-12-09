@@ -1,4 +1,5 @@
 class GamesController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create, :index, :update]
 
   def new
     @game = Game.new
