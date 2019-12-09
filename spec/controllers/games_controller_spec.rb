@@ -11,6 +11,9 @@ RSpec.describe GamesController, type: :controller do
   
   describe "games#create action" do
     it "should successfully create a new game in our database" do
+      user = FactoryBot.create(:user)
+      sign_in user
+      
       post :create, params: { game: { name: 'Test Game' } }
       expect(response).to redirect_to game_path(Game.last.id)
       game = Game.last
