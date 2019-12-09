@@ -1,19 +1,32 @@
-<h1>Listing Active Games</h1>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>State</th>
-    <th>Black Player</th>
-    <th>Join</th>
-  </tr>
-
-
-  <% @games.each do |game| %>
-    <tr>
-      <td><%= game.name %></td>
-      <td><%= game.state %></td>
-      <td><%= game.black_user_id %></td>
-      <td><%= link_to 'Join Game', game_url(game), method: :put %></td>
-    </tr>
-  <% end %>
-</table>
+<div class="booyah-box">
+  <h1>List of Available Games</h1>
+  <div class="booyah-box">
+    <% if @active_games.present? %>
+    <h2>Active Games</h2>
+    <% end %>
+    <br>
+      <% @active_games.each do |game| %>
+          <p>
+            <% white_player = User.find_by(id: game.white_user_id) %>
+            
+          
+          </p>
+      <% end %>
+  </div>
+  <div class="booyah-box">
+    <% if @open_games.present? %>
+    <h2>Open Games</h2>
+    <% end %>
+    <br>
+      <% @open_games.each do |game| %>
+          <p>
+            <% white_player = User.find_by(id: game.white_user_id) %>
+            <%= white_player.email %>
+            <%= simple_form_for game, :method => :put do |f| %>
+              <%= f.input :black_user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
+              <%= f.submit 'Join Game' %>
+            <% end %>
+          </p>
+      <% end %>
+  </div>
+</div>
