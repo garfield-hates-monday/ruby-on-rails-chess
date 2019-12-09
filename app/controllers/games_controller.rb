@@ -11,8 +11,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    @game = Game.create(game_params)
-    @game.white_user_id = current_user
+    @game = Game.create(game_params.merge(white_user_id: current_user.id))
     @game.save
 
     if @game.valid?
