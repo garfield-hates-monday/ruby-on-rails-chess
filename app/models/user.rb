@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  belongs_to :game
+  belongs_to :game, class_name: 'User', optional: true
 
   # OmniAuth Helper Function
   def self.from_omniauth(auth)
