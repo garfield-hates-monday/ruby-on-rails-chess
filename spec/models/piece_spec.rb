@@ -69,5 +69,15 @@ RSpec.describe Piece, type: :model do
       knight = Knight.create( :x_position => 2, :y_position => 1, :color => "white" )
       expect(knight.valid_move?(3,2)).to eq false
     end
+
+    it "rook should return true for a valid move" do
+      rook = Rook.create( :x_position => 2, :y_position => 0, :color => "white" )
+      expect(rook.valid_move?(2,8)).to eq true
+    end
+
+    it "rook should return false for an invalid move" do
+      rook = Rook.create( :x_position => 2, :y_position => 0, :color => "white" )
+      expect(rook.valid_move?(1,7)).to eq false
+    end
   end
 end
