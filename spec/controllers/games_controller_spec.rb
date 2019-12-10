@@ -11,6 +11,12 @@ RSpec.describe GamesController, type: :controller do
   
   describe "games#create action" do
     it "should successfully create a new game in our database" do
+      User.create(
+        email: "dummyEmail1@gmail.com",
+        password: "secretPassword",
+        password_confirmation: "secretPassword"
+      )
+      
       post :create, params: { game: { name: 'Test Game' } }
       expect(response).to redirect_to game_path(Game.last.id)
       game = Game.last
