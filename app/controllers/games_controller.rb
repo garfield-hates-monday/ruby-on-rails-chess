@@ -1,4 +1,5 @@
 class GamesController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create, :index, :update]
 
   def new
     @game = Game.new
@@ -11,8 +12,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    @game = Game.create(game_params)
-    @game.white_user_id = current_user
+    @game = Game.create(game_params.merge(white_user_id: current_user))
     @game.save
 
     if @game.valid?

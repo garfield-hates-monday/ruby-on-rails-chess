@@ -1,32 +1,71 @@
-<div class="booyah-box">
-  <h1>List of Available Games</h1>
-  <div class="booyah-box">
-    <% if @active_games.present? %>
-    <h2>Active Games</h2>
-    <% end %>
-    <br>
+<h1 class="avail-games col-4 offset-4">List of Available Games</h1>
+<br>
+<div class="booyah-box offset-1 col-10">
+  <h2 class="avail-games">Active Games</h2>
+  <br>
+  <% if @active_games.present? %>
+    <div class="row">
       <% @active_games.each do |game| %>
-          <p>
+        <div class="booyah-box col-md-6 col-sm-12">
+          <% if game.white_user_id == current_user.id %>
+            <% black_player = User.find_by(id: game.black_user_id) %>
+            Opponent: <%= black_player.email %>
+            <br>
+            Status: <%= game.state %>
+            <br>
+            Turn: <%= game.turn %>
+            <br>
+            <%= link_to 'Go to Game', game_path(game), class: 'btn btn-primary float-right' %>  
+          <% else %>
             <% white_player = User.find_by(id: game.white_user_id) %>
-            
-          
-          </p>
+            Opponent: <%= white_player.email %>
+            <br>
+            Status: <%= game.state %>
+            <br>
+            Turn: <%= game.turn %>
+            <br>
+            <%= link_to 'Go to Game', game_path(game), class: 'btn btn-primary float-right' %>
+          <% end %>
+        </div>
       <% end %>
-  </div>
-  <div class="booyah-box">
-    <% if @open_games.present? %>
-    <h2>Open Games</h2>
-    <% end %>
-    <br>
+    </div>
+  <% end %>
+</div>
+<br>
+<br>
+<div class="booyah-box offset-1 col-10">
+  <h2 class="avail-games">Open Games</h2>
+  <br>
+  <% if @open_games.present? %>
+    <div class="row">
       <% @open_games.each do |game| %>
-          <p>
-            <% white_player = User.find_by(id: game.white_user_id) %>
-            <%= white_player.email %>
-            <%= simple_form_for game, :method => :put do |f| %>
-              <%= f.input :black_user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
-              <%= f.submit 'Join Game' %>
-            <% end %>
-          </p>
+        <div class="booyah-box col-md-6 col-sm-12">  
+          <% white_player = User.find_by(id: game.white_user_id) %>
+          <%= white_player.email %>
+          <br>
+          <% if white_player.wins == nil %>
+            Wins: 0
+          <% else %>
+            Wins: <%= white_player.wins %>
+          <% end %>
+          <br>
+          <% if white_player.losses == nil %>
+            Losses: 0
+          <% else %>
+            Losses: <%= white_player.losses %>
+          <% end %>
+          <div class="float-right">
+          <%= simple_form_for game, :method => :put do |f| %>
+            <%= f.input :black_user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
+            <%= f.submit 'Join Game', class: 'btn-primary btn' %>
+          <% end %>
+          </div>
+        </div>
       <% end %>
+    </div>
+  <% end %>
+    </div>
   </div>
 </div>
+<br>
+<br>
