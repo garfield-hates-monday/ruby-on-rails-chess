@@ -55,6 +55,21 @@ RSpec.describe Piece, type: :model do
   end
   describe 'valid_move?' do
     let(:game) { Game.create! }
+
+    let(:bishop) { Bishop.create( x_position: 3, y_position: 8, color: "white" ) }
+
+    it "bishop should return true for a valid move" do
+      expect(bishop.valid_move?(5, 6)).to eq true
+    end
+
+    it "bishop should return true for a valid move" do
+      expect(bishop.valid_move?(1, 6)).to eq true
+    end
+
+    it "bishop should return false for an invalid move" do
+      expect(bishop.valid_move?(0, 0)).to eq false
+    end
+    
     let(:queen) { Queen.create(x_position: 4, y_position: 8, color: 'white', type: 'queen') }
 
     it "queen should return true for a valid horizontal move" do
