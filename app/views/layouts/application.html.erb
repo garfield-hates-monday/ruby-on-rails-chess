@@ -19,24 +19,13 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto mt-2 mt-md-0">
           <li class="nav-item">
-            <%= link_to new_game_path, class: 'nav-link' do %>
-              <i class="fa fa-plus-circle"></i>
-              New Game
-            <% end %>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+            <%= link_to 'Games', games_path, class: 'nav-link' %>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            <%= link_to new_game_path, class: 'nav-link' do %>
+              <i class="fa fa-chess-pawn"></i>
+              New Game
+            <% end %>
           </li>
         </ul>
         <ul class="navbar-nav">
@@ -55,6 +44,67 @@
         </ul>
       </div>
     </nav>
+
     <%= yield %>
+    <div id="footer">
+      <p>Created by:</p>
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-sm-3">
+            <b>Conner Krall</b>
+            <br>
+            <%= link_to 'https://connerkrall.netlify.com/' do %>  
+              <span class="fa fa-2x social-button fas fa-user-circle"></span>
+            <% end %>
+            <%= link_to 'http://github.com/ckrallin' do %>
+              <span class="fa fa-github-square fa-2x social-button"></span>
+            <% end %>
+            <%= link_to 'https://www.linkedin.com/in/conner-krall-b2212a28/' do %>  
+              <span class="fa fa-linkedin-square fa-2x social-button"></span>
+            <% end %>
+          </div>
+          <div class="col-12 col-sm-3">
+            <b>Esteban Espinoza</b>
+            <br>
+            <%= link_to 'https://eespinoza.netlify.com/' do %>  
+              <span class="fa fa-2x social-button fas fa-user-circle"></span>
+            <% end %>
+            <%= link_to 'https://github.com/estebanespinoza24' do %>
+              <span class="fa fa-github-square fa-2x social-button"></span>
+            <% end %>
+            <%= link_to 'https://www.linkedin.com/in/esteban-espinoza/' do %>  
+              <span class="fa fa-linkedin-square fa-2x social-button"></span>
+            <% end %>
+          </div>
+          <div class="col-12 col-sm-3">
+            <b>Gregory Eglen</b>
+            <br>
+            <%= link_to 'https://akagfunk.netlify.com/' do %>  
+              <span class="fa fa-2x social-button fas fa-user-circle"></span>
+            <% end %>
+            <%= link_to 'https://github.com/gregory-eglen' do %>
+              <span class="fa fa-github-square fa-2x social-button"></span>
+            <% end %>
+            <%= link_to 'https://www.linkedin.com/in/gregory-eglen-288530a2' do %>  
+              <span class="fa fa-linkedin-square fa-2x social-button"></span>
+            <% end %>
+          </div>
+          <div class="col-12 col-sm-3 social">
+            <b>Trey Guy</b>
+            <br>
+            <%= link_to 'Https://www.treyguy.netlify.com' do %>  
+              <span class="fa fa-2x social-button fas fa-user-circle"></span>
+            <% end %>
+            <%= link_to 'https://github.com/tguy728' do %>
+              <span class="fa fa-github-square fa-2x social-button"></span>
+            <% end %>
+            <%= link_to 'https://www.linkedin.com/in/trey-guy-8983a21b' do %>  
+              <span class="fa fa-linkedin-square fa-2x social-button"></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
+
 </html>

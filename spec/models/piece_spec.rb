@@ -1,7 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe Piece, type: :model do
-  describe '#move_to!' do
+  describe "King" do
+    let(:game) { Game.create!(name: "Test Game" ) }
+    let(:king) { King.create!( game: game, :x_position => 4, :y_position => 1, :color => "white" ) }
+    it "King.create should create a new King piece" do
+      expect(king.valid?).to eq true
+    end
+
+    it "should return true for a valid move" do
+     expect(king.valid_move?(5, 2)).to eq true
+    end
+
+    it "should return false for an invalid move" do
+      expect(king.valid_move?(9,9)).to eq false
+    end
+  end
+    
+   describe '#move_to!' do
     let(:game) { Game.create! }
     let(:piece) { Piece.create!(x_position: 0, y_position: 0, game: game, color: 'white') }
     it 'should be able to move to coordinate' do
@@ -10,7 +26,7 @@ RSpec.describe Piece, type: :model do
       expect(piece.y_position).to eq(1)
       expect(piece.x_position).to eq(1)
     end
-
+   
     it 'should be able to capture opposing piece' do
       opposing_piece = Piece.create!(x_position: 0, y_position: 1, game: game, color: 'black')
 
@@ -35,6 +51,33 @@ RSpec.describe Piece, type: :model do
       expect(same_color_piece.y_position).to eq(1)
       expect(piece.x_position).to eq(0)
       expect(piece.y_position).to eq(0)
+    end
+  end
+  describe 'valid_move?' do
+    let(:game) { Game.create! }
+    it "knight should return true for a valid move" do
+      knight = Knight.create( :x_position => 2, :y_position => 1, :color => "white" )
+      expect(knight.valid_move?(3, 3)).to eq true
+    end
+
+    it "knight should return true for a valid move" do
+      knight = Knight.create( :x_position => 4, :y_position => 4, :color => "white" )
+      expect(knight.valid_move?(6, 3)).to eq true
+    end
+
+    it "knight should return false for an invalid move" do
+      knight = Knight.create( :x_position => 2, :y_position => 1, :color => "white" )
+      expect(knight.valid_move?(3,2)).to eq false
+    end
+
+    it "rook should return true for a valid move" do
+      rook = Rook.create( :x_position => 2, :y_position => 0, :color => "white" )
+      expect(rook.valid_move?(2,8)).to eq true
+    end
+
+    it "rook should return false for an invalid move" do
+      rook = Rook.create( :x_position => 2, :y_position => 0, :color => "white" )
+      expect(rook.valid_move?(1,7)).to eq false
     end
   end
 end
