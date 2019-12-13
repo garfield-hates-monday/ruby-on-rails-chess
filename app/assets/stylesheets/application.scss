@@ -16,6 +16,10 @@
 
 .navbar {
   background-color: #808080;
+  -webkit-box-shadow: 0 8px 6px -6px #999;
+  -moz-box-shadow: 0 8px 6px -6px #999;
+  box-shadow: 0 8px 6px -6px #999;
+  margin-bottom: 30px;
 }
 
 a {
@@ -24,6 +28,17 @@ a {
 
 .navbar-brand {
   font-size: 30px;
+}
+
+.avail-games {
+  text-align: center;
+  background: white;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+body {
+  background: image_url('5-dots.png');
 }
 
 .booyah-box {
@@ -35,7 +50,7 @@ a {
   border-color: #e4e4e4 #bebebd #bebebd #e4e4e4;
   margin-top: 10px;
   margin-bottom: 15px;
-  padding: 40px;
+  padding: 30px;
 }
 
 .black, .white {
@@ -45,7 +60,7 @@ a {
 }
 
 .black {
-  background-color: black;
+  background-color: #696969;
 }
 
 .white {

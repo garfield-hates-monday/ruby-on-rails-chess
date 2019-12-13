@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   root 'static_pages#index'
   resources :games, only: [:new, :create, :show, :index, :update]
   resources :pieces, only: [:show, :update]
+  resources :users, only: :show
 end
+

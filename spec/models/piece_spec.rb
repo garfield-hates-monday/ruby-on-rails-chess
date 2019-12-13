@@ -55,6 +55,7 @@ RSpec.describe Piece, type: :model do
   end
   describe 'valid_move?' do
     let(:game) { Game.create! }
+
     let(:bishop) { Bishop.create( x_position: 3, y_position: 8, color: "white" ) }
 
     it "bishop should return true for a valid move" do
@@ -67,6 +68,24 @@ RSpec.describe Piece, type: :model do
 
     it "bishop should return false for an invalid move" do
       expect(bishop.valid_move?(0, 0)).to eq false
+    end
+    
+    let(:queen) { Queen.create(x_position: 4, y_position: 8, color: 'white', type: 'queen') }
+
+    it "queen should return true for a valid horizontal move" do
+      expect(queen.valid_move?(5, 8)).to eq true
+    end
+
+    it "queen should return true for a valid diagonal move" do
+      expect(queen.valid_move?(5, 7)).to eq true
+    end
+
+    it "queen should return true for a valid verticle move" do
+      expect(queen.valid_move?(4, 7)).to eq true
+    end
+
+    it "queen should return false for an invalid move" do
+      expect(queen.valid_move?(6, 7)).to eq false
     end
 
     it "knight should return true for a valid move" do
@@ -82,6 +101,16 @@ RSpec.describe Piece, type: :model do
     it "knight should return false for an invalid move" do
       knight = Knight.create( :x_position => 2, :y_position => 1, :color => "white" )
       expect(knight.valid_move?(3,2)).to eq false
+    end
+
+    it "rook should return true for a valid move" do
+      rook = Rook.create( :x_position => 2, :y_position => 0, :color => "white" )
+      expect(rook.valid_move?(2,8)).to eq true
+    end
+
+    it "rook should return false for an invalid move" do
+      rook = Rook.create( :x_position => 2, :y_position => 0, :color => "white" )
+      expect(rook.valid_move?(1,7)).to eq false
     end
   end
 end

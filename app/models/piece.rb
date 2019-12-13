@@ -3,14 +3,15 @@ class Piece < ApplicationRecord
   belongs_to :game
 
   def move_to!(x, y)
+
     opposing_piece = game.pieces.find_by(x_position: x, y_position: y)
     
-    if opposing_piece.present? && opposing_piece.color != color
+    if opposing_piece.present? && opposing_piece.color != self.color
       opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
     elsif opposing_piece.present?
       return 'invalid move'
     end
-    update_attributes(x_position: x, y_position: y)
+    self.update_attributes(x_position: x, y_position: y)
   end
 
   def is_obstructed?(new_x, new_y)

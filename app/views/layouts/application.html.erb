@@ -23,13 +23,16 @@
           </li>
           <li class="nav-item">
             <%= link_to new_game_path, class: 'nav-link' do %>
-              <i class="fa fa-plus-circle"></i>
+              <i class="fa fa-chess-pawn"></i>
               New Game
             <% end %>
           </li>
         </ul>
         <ul class="navbar-nav">
           <% if user_signed_in? %>
+            <li class="nav-item">
+              <%= link_to 'My Profile', user_path(current_user), class: 'nav-link' %>
+            </li>
             <li class="nav-item">
               <%= link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link' %>
             </li>
@@ -44,8 +47,12 @@
         </ul>
       </div>
     </nav>
+    <br>
+    <br>
 
     <%= yield %>
+    <br>
+    <br>
     <div id="footer">
       <p>Created by:</p>
       <div class="container">
