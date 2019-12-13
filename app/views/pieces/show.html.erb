@@ -5,21 +5,13 @@
     <% (1..8).each do |y_position| %>
       <div class="row row-<%= y_position %>">
         <% (1..8).each do |x_position| %>
-        <% piece = @pieces.detect{|p| p.x_position == x_position && p.y_position == y_position} %>
+          <% piece = @pieces.detect{|p| p.x_position == x_position && p.y_position == y_position} %>
           <%= link_to piece_path(:x_position => x_position, :y_position => y_position), method: :put do %>
-          <div data-x-position="<%= x_position %>"  data-y-position="<%= y_position %>" class="<%= y_position % 2 == x_position % 2 ? "white" : "black" %>">
-            <% if piece %>
-              <%= link_to piece_path(piece.id), method: :put do %>
-                <% if piece == @piece %>
-                  <span style="background-color: yellow; color: black; border-style: double;"><%= piece.type %></span>
-                <% elsif piece.color == 'white' %>
-                  <span style="background-color: <%= piece.color %>; color: black; border-style: double;"><%= piece.type %></span>
-                <% else %>
-                  <span style="background-color: black; color: white; border-style: double;"><%= piece.type %></span>
-                <% end %>
+            <div data-x-position="<%= x_position %>"  data-y-position="<%= y_position %>" class="<%= y_position % 2 == x_position % 2 ? "white" : "black" %>">
+              <% if piece %>
+                <span><%= image_tag("#{piece.color}-#{piece.type}.png") %></span>
               <% end %>
-            <% end %>
-          </div>
+            </div>
           <% end %>
         <% end %>
       </div>
