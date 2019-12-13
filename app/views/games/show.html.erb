@@ -8,7 +8,9 @@
           <div data-x-position="<%= x_position %>"  data-y-position="<%= y_position %>" class="<%= y_position % 2 == x_position % 2 ? "white" : "black" %>">
             <% piece = @pieces.detect{|p| p.x_position == x_position && p.y_position == y_position} %>
             <% if piece %>
-              <span style=><%= image_tag("#{piece.color}-#{piece.type}.png") %></span>
+              <%= link_to piece_path(piece) do %>
+                <span><%= image_tag("#{piece.color}-#{piece.type}.png") %></span>
+              <% end %>
             <% end %>
           </div>
         <% end %>

@@ -7,9 +7,19 @@ class PiecesController < ApplicationController
   end
 
   def update
-    @piece = Piece.find_by_id(params[:id])
+    @piece = Piece.find(params[:id])
     @game = @piece.game
-    @piece.move_to!(:x_position, :y_position)
+    #@piece.update_attributes(piece_params)
+    @piece.move_to!(params[:x_position], params[:y_position])
     redirect_to game_url(@game)
   end
+
+  private
+
+  def piece_params
+    params.permit(:x_position, :y_position, :type)
+  end
 end
+
+
+
