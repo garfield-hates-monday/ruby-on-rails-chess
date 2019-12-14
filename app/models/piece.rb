@@ -1,9 +1,12 @@
 class Piece < ApplicationRecord
-  self.inheritance_column = nil
   belongs_to :game
 
-  def move_to!(x, y)
+  def valid_move?(x, y)
+    #this method is implemented by the individual piece
+  end
 
+  def move_to!(x, y)
+    return "invalid move" if valid_move?(x, y) == false
     opposing_piece = game.pieces.find_by(x_position: x, y_position: y)
     
     if opposing_piece.present? && opposing_piece.color != self.color
