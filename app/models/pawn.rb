@@ -1,5 +1,5 @@
 class Pawn < Piece
-  attr_accessor :on_initial_square, :color
+  attr_accessor :on_initial_square
   
 
   def valid_move?(x,y)

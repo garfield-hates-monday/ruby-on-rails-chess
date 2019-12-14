@@ -1,4 +1,7 @@
 <div class="booyah-box chess-box col-10 offset-1">
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
   <h1>Good Luck!</h1>
   <br>
   <div class="chessboard">
@@ -9,7 +12,11 @@
           <%= link_to piece_path(:x_position => x_position, :y_position => y_position), method: :put do %>
             <div data-x-position="<%= x_position %>"  data-y-position="<%= y_position %>" class="<%= y_position % 2 == x_position % 2 ? "white" : "black" %>">
               <% if piece %>
-                <span><%= image_tag("#{piece.color}-#{piece.type}.png") %></span>
+                <% if piece.id == @piece.id %>
+                  <span style="background-color: yellow"><%= image_tag("#{piece.color}-#{piece.type}.png") %></span>
+                <% else %>
+                  <span><%= image_tag("#{piece.color}-#{piece.type}.png") %></span>
+                <% end %>
               <% end %>
             </div>
           <% end %>
