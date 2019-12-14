@@ -9,9 +9,13 @@ class PiecesController < ApplicationController
   def update
     @piece = Piece.find(params[:id])
     @game = @piece.game
-    #@piece.update_attributes(piece_params)
-    @piece.move_to!(params[:x_position], params[:y_position])
-    redirect_to game_url(@game)
+    if @piece.valid_move?(params[:x_position].to_i, params[:y_position].to_i) == false
+      flash[:warning] = "Invalid move!"
+      redirect_to piece_url(@piece)
+    else
+      @piece.move_to!(params[:x_position].to_i, params[:y_position].to_i)
+      redirect_to game_url(@game)
+    end
   end
 
   private

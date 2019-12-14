@@ -6,6 +6,7 @@ class Piece < ApplicationRecord
   end
 
   def move_to!(x, y)
+
     return "invalid move" if valid_move?(x, y) == false
     opposing_piece = game.pieces.find_by(x_position: x, y_position: y)
     
