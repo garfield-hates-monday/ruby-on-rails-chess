@@ -70,7 +70,7 @@ RSpec.describe Piece, type: :model do
       expect(bishop.valid_move?(0, 0)).to eq false
     end
     
-    let(:queen) { Queen.create(x_position: 4, y_position: 8, color: 'white', type: 'queen') }
+    let(:queen) { Queen.create(x_position: 4, y_position: 8, color: 'white') }
 
     it "queen should return true for a valid horizontal move" do
       expect(queen.valid_move?(5, 8)).to eq true
