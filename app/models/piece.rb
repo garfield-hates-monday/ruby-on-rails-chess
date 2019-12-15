@@ -97,6 +97,18 @@ class Piece < ApplicationRecord
   #   !white
   # end
 
+  def check?(x_position, y_position, id = nil, color = nil)
+    King.each do | f |
+      if f.user_id != self.user_id && f.x_position != nil
+        if f.valid_move?(x_position, x_position, id, color) == true && f.is_obstructed(x_position, x_position) == false
+          return f
+          break
+        end
+      end
+    end
+    return false
+  end
+  
 end
 
 
