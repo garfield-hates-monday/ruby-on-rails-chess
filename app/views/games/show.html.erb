@@ -23,7 +23,11 @@
 <script>
     $(document).ready(function(){
       $(".draggable").draggable({
-        snap: ".droppable"        // snap the piece to the board
+        snap: ".droppable",        // snap the piece to the board
+        snapTolerance: 35,        //so that people don't drop pieces in between two squares
+        revert: 'invalid',
+        cursor: "move",
+        containment: ".chessboard"
       });
       $(".droppable").droppable( {
       drop: handleDropEvent
@@ -35,8 +39,8 @@
         var x = parseInt(newCoord.charAt(0)); // takes the x coordinate and turns to number
         var y =parseInt(newCoord.charAt(2));  // takes the y coordinate and turns to number
 
-        console.log(x);
-        console.log(y);
+        //console.log(x);
+        //console.log(y);
         // alert( 'The square with ID ' + id + ' was dropped onto me!'); //just to test that the numbers are pulling correctly
         $.ajax({
           type: 'PUT',   // update to the piece
