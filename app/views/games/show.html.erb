@@ -1,20 +1,55 @@
 <div class="booyah-box chess-box col-10 offset-1">
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
   <h1>Good Luck!</h1>
   <br>
-  <div class="chessboard">
+  <table class="chessboard">
     <% (1..8).each do |y_position| %>
-      <div class="row row-<%= y_position %>">
+      <tr class="row row-<%= y_position %>">
         <% (1..8).each do |x_position| %>
-          <div data-x-position="<%= x_position %>"  data-y-position="<%= y_position %>" class="<%= y_position % 2 == x_position % 2 ? "white" : "black" %>">
+          <td data-x-position="<%= x_position %>"  data-y-position="<%= y_position %>" class="droppable <%= y_position % 2 == x_position % 2 ? "white" : "black" %>" id = "<%= x_position %>-<%= y_position %>">
             <% piece = @pieces.detect{|p| p.x_position == x_position && p.y_position == y_position} %>
             <% if piece %>
-              <%= link_to piece_path(piece) do %>
-                <span><%= image_tag("#{piece.color}-#{piece.type}.png") %></span>
-              <% end %>
+              <div><%= image_tag "#{piece.color}-#{piece.type}.png", class: 'draggable', style: "text-align: center", id: "#{piece.id}"%></div>
             <% end %>
-          </div>
+          </td>
         <% end %>
-      </div>
+      </tr>
     <% end %>
-  </div>
+  </table>
 </div>
+
+<script>
+    $(document).ready(function(){
+      $(".draggable").draggable({
+        snap: ".droppable",        // snap the piece to the board
+        snapTolerance: 35,        //so that people don't drop pieces in between two squares
+        revert: 'invalid',
+        cursor: "move",
+        containment: ".chessboard"
+      });
+      $(".droppable").droppable( {
+      drop: handleDropEvent
+        });
+
+      function handleDropEvent( event, ui ) {
+        var id = parseInt(ui.draggable.attr('id')); //piece id
+        var newCoord = $(this).attr('id'); //id is the coordinates i.e. (1-2)
+        var x = parseInt(newCoord.charAt(0)); // takes the x coordinate and turns to number
+        var y =parseInt(newCoord.charAt(2));  // takes the y coordinate and turns to number
+
+        //console.log(x);
+        //console.log(y);
+        // alert( 'The square with ID ' + id + ' was dropped onto me!'); //just to test that the numbers are pulling correctly
+        $.ajax({
+          type: 'PUT',   // update to the piece
+           url: '/pieces/' + id,
+           beforeSend: function(xhr) {xhr.setRequestHeader("X-CSRF-Token", $('meta[name="csrf-token"]').attr("content"))},
+           data: { id: id, x_position: x, y_position: y }, //should update to the new y position
+        });
+        
+      }
+
+    });
+</script>

@@ -11,11 +11,11 @@ class PiecesController < ApplicationController
     @game = @piece.game
     if @piece.valid_move?(params[:x_position].to_i, params[:y_position].to_i) == false
       flash[:warning] = "Invalid move!"
-      redirect_to piece_url(@piece)
     else
       @piece.move_to!(params[:x_position].to_i, params[:y_position].to_i)
-      redirect_to game_url(@game)
+      flash[:success] = "#{@piece.color.capitalize} #{@piece.type} moved to (#{@piece.x_position}, #{@piece.y_position})"
     end
+    redirect_to game_url(@game)
   end
 
   private

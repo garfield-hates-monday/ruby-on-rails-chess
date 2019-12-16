@@ -80,3 +80,5 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 
 gem "font-awesome-rails"
+
+gem 'jquery-ui-rails'
