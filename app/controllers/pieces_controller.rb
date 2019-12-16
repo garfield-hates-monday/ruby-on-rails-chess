@@ -13,6 +13,7 @@ class PiecesController < ApplicationController
       flash[:warning] = "Invalid move!"
     else
       @piece.move_to!(params[:x_position].to_i, params[:y_position].to_i)
+      flash[:success] = "#{@piece.color.capitalize} #{@piece.type} moved to (#{@piece.x_position}, #{@piece.y_position})"
     end
     redirect_to game_url(@game)
   end

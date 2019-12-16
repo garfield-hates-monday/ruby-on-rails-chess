@@ -1,4 +1,7 @@
 <div class="booyah-box chess-box col-10 offset-1">
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>"><%= value %></div>
+  <% end %>
   <h1>Good Luck!</h1>
   <br>
   <table class="chessboard">
@@ -34,12 +37,12 @@
 
         console.log(x);
         console.log(y);
-        alert( 'The square with ID ' + id + ' was dropped onto me!'); //just to test that the numbers are pulling correctly
+        // alert( 'The square with ID ' + id + ' was dropped onto me!'); //just to test that the numbers are pulling correctly
         $.ajax({
           type: 'PUT',   // update to the piece
            url: '/pieces/' + id,
-           dataType: 'json',
-           data: { id: id, x_position: x, y_position: y } //should update to the new y position
+           beforeSend: function(xhr) {xhr.setRequestHeader("X-CSRF-Token", $('meta[name="csrf-token"]').attr("content"))},
+           data: { id: id, x_position: x, y_position: y }, //should update to the new y position
         });
         
       }
