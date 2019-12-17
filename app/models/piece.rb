@@ -5,19 +5,6 @@ class Piece < ApplicationRecord
     #this method is implemented by the individual piece
   end
 
-  def move_to!(x, y)
-
-    return "invalid move" if valid_move?(x, y) == false
-    opposing_piece = game.pieces.find_by(x_position: x, y_position: y)
-    
-    if opposing_piece.present? && opposing_piece.color != self.color
-      opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
-    elsif opposing_piece.present?
-      return 'invalid move'
-    end
-    self.update_attributes(x_position: x, y_position: y)
-  end
-
   def is_obstructed?(new_x, new_y)
     direction = move_direction(new_x, new_y)
     if direction == 'horizontal'
@@ -84,6 +71,18 @@ class Piece < ApplicationRecord
 
   def y_difference(y)
     y_difference = (y_position - y).abs
+  end
+
+  def move_to!(x, y)
+    return "invalid move" if valid_move?(x, y) == false
+    opposing_piece = game.pieces.find_by(x_position: x, y_position: y)
+    
+    if opposing_piece.present? && opposing_piece.color != self.color
+      opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
+    elsif opposing_piece.present?
+      return 'invalid move'
+    end
+    self.update_attributes(x_position: x, y_position: y)
   end
 
   # def color
