@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :index, :update]
+  before_action :authenticate_user!, only: [:new, :create, :index, :update, :destroy, :forfeit]
 
   def new
     @game = Game.new
@@ -23,9 +23,27 @@ class GamesController < ApplicationController
 
   end
 
+  def destroy
+    @game = Game.find(params[:id])
+    @game.destroy
+    redirect_to games_path
+  end
+
+  def forfeit
+    @game = Game.find_by_id(params[:id])
+    if current_user.id == @game.white_player_user_id
+      @game.update_attributes(winner_user_id: @game.black_player_user_id, loser_user_id: @game.white_player_user_id, state: "end", turn: "end")
+    else
+      @game.update_attributes(winner_user_id: @game.white_player_user_id, loser_user_id: @game.black_player_user_id, state: "end", turn: "end")
+    end
+    redirect_to games_path
+
+  end
+
   def index
     @open_games = Game.where(black_user_id: nil).where.not(white_user_id: current_user.id).first(15)
     @active_games = Game.where.not(white_user_id: nil).where.not(black_user_id: nil).where(winner_user_id: nil)
+    @unmatched_games = Game.where(black_user_id: nil).where(white_user_id: current_user.id)
   end
 
   def update
