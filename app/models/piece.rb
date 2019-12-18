@@ -85,17 +85,6 @@ class Piece < ApplicationRecord
     y_difference = (y_position - y).abs
   end
 
-  # def color
-  #   white? ? 'white' : 'black'
-  # end
-
-  # def white?
-  #   white
-  # end
-
-  # def black?
-  #   !white
-  # end
 
 end
 
