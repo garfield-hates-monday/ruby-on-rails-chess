@@ -73,8 +73,14 @@ class Piece < ApplicationRecord
     y_difference = (y_position - y).abs
   end
 
+  def can_move_to?(x,y)
+    return false if is_obstructed?(x, y) == true
+    return false if valid_move?(x, y) == false
+    true
+  end
+
   def move_to!(x, y)
-    return "invalid move" if valid_move?(x, y) == false
+    return false if valid_move?(x, y) == false
     opposing_piece = game.pieces.find_by(x_position: x, y_position: y)
     
     if opposing_piece.present? && opposing_piece.color != self.color

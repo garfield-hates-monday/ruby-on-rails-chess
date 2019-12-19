@@ -4,10 +4,20 @@ require 'rails_helper'
     describe 'check?' do
       it "should return true for rook to put king in check" do
         game = Game.create
-        King.create(x_position: 0, y_position: 7, color: "white")
-        Rook.create(x_position: 2, y_position: 7, color: "black")
-        expect(game.check?("white")).to eq true
+        king = game.pieces.find_by(type: "King", color: "black")
+        king.update_attributes(x_position: 4, y_position: 4)
+        rook = Rook.create(game_id: game.id, x_position: 6, y_position: 4, color: "white")
+        expect(game.check?("black")).to eq true
       end 
+
+      it "should return false if a piece is obstructing the king" do
+        game = Game.create
+        king = game.pieces.find_by(type: "King", color: "black")
+        king.update_attributes(x_position: 4, y_position: 4)
+        rook = Rook.create(game_id: game.id, x_position: 6, y_position: 4, color: "white")
+        blocking_pawn = Pawn.create(game_id: game.id, x_position: 5, y_position: 4, color: "white")
+        expect(game.check?("black")).to eq false
+      end
     end
   end
 
