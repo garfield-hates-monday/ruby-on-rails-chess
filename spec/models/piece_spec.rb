@@ -113,4 +113,55 @@ RSpec.describe Piece, type: :model do
       expect(rook.valid_move?(1,7)).to eq false
     end
   end
+
+  describe 'is_obstructed?' do
+  
+    it "should return true when a piece is obstructed vertically" do
+      game = Game.create
+      white_rook = game.pieces.find_by(x_position: 1, y_position: 8)
+      black_rook = game.pieces.find_by(x_position: 8, y_position: 1)
+      white_queen = game.pieces.find_by(x_position: 4, y_position: 8)
+      expect(white_rook.is_obstructed?(1,6)).to eq true
+      expect(black_rook.is_obstructed?(8,3)).to eq true
+      expect(white_queen.is_obstructed?(4,6)).to eq true
+    end
+
+    it "should return true when a piece is obstructed horizontally" do
+      game = Game.create
+      white_rook = game.pieces.find_by(x_position: 1, y_position: 8)
+      black_rook = game.pieces.find_by(x_position: 8, y_position: 1)
+      white_rook.update_attributes(x_position: 3, y_position: 4)
+      black_rook.update_attributes(x_position: 5, y_position: 4)
+      expect(white_rook.is_obstructed?(6,4)).to eq true
+      expect(black_rook.is_obstructed?(2,4)).to eq true
+    end
+
+    it "should return true when a piece is obstructed diagonally" do
+      game = Game.create
+      white_queen = game.pieces.find_by(x_position: 4, y_position: 8)
+      black_queen = game.pieces.find_by(x_position: 4, y_position: 1)
+      white_queen.update_attributes(x_position: 3, y_position: 5)
+      black_queen.update_attributes(x_position: 4, y_position: 4)
+      expect(white_queen.is_obstructed?(5,3)).to eq true
+      expect(black_queen.is_obstructed?(2,6)).to eq true
+    end
+
+    it "should return false when a piece is not obstructed" do
+      game = Game.create
+      white_queen = game.pieces.find_by(x_position: 4, y_position: 8)
+      black_queen = game.pieces.find_by(x_position: 4, y_position: 1)
+      white_queen.update_attributes(x_position: 3, y_position: 6)
+      black_queen.update_attributes(x_position: 6, y_position: 3)
+      expect(white_queen.is_obstructed?(1,6)).to eq false
+      expect(white_queen.is_obstructed?(5,6)).to eq false
+      expect(white_queen.is_obstructed?(5,4)).to eq false
+      expect(white_queen.is_obstructed?(1,4)).to eq false
+      expect(white_queen.is_obstructed?(3,4)).to eq false
+      expect(black_queen.is_obstructed?(6,5)).to eq false
+      expect(black_queen.is_obstructed?(4,5)).to eq false
+      expect(black_queen.is_obstructed?(8,5)).to eq false
+      expect(black_queen.is_obstructed?(4,3)).to eq false
+      expect(black_queen.is_obstructed?(4,8)).to eq false
+    end
+  end
 end
