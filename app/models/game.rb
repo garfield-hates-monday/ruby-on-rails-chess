@@ -3,6 +3,11 @@ class Game < ApplicationRecord
   has_many :pieces, dependent: :destroy
   after_create :populate_game
 
+  def reset_pieces_player
+    pieces.where(color: "black").update_all(user_id: black_user_id)
+    pieces.where(color: "white").update_all(user_id: white_user_id)
+  end
+
   def populate_game
     # WHITE PIECES
       # Pawns
