@@ -85,6 +85,35 @@ class Piece < ApplicationRecord
     y_difference = (y_position - y).abs
   end
 
+  def castling_queenside?
+    type == "King" &&
+    x_position == 1 &&
+    @piece.moves == 0 &&
+    y_position == @piece.color == "white" ? 8 : 0 &&
+    rook_at(1,y_position)
+  end
+
+  def castling_kingside?
+    type == "King" &&
+    x_position == 8 &&
+    @piece.moves == 0 &&
+    y_position == @piece.color == "white" ? 8 : 0  &&
+    rook_at(8,y_position)
+  end
+
+  def update_rook_if_castling(y)
+    rook_at(8, y).update_attributes(x_position: 6, y_position: y) if castling_kingside?
+    rook_at(1, y).update_attributes(x_position: 4, y_position: y) if castling_queenside?
+  end
+  
+  def rook_at(x,y)
+    piece = piece_at(x,y)
+    piece && piece.type == "Rook"
+  end
+
+  def piece_at(x, y)
+    game.pieces.where(x_position: x, y_position: y).first
+  end
 
 end
 
