@@ -88,9 +88,15 @@ class Piece < ApplicationRecord
     y_position == @piece.color == "white" ? 8 : 0  &&
     rook_at(8,y_position)
   end
+  
+  def can_move_to?(x,y)
+    return false if is_obstructed?(x, y) == true
+    return false if valid_move?(x, y) == false
+    true
+  end
 
   def move_to!(x, y)
-    return "invalid move" if valid_move?(x, y) == false
+    return false if valid_move?(x, y) == false
     opposing_piece = game.pieces.find_by(x_position: x, y_position: y)
     
     if opposing_piece.present? && opposing_piece.color != self.color
@@ -100,12 +106,7 @@ class Piece < ApplicationRecord
     end
     self.update_attributes(x_position: x, y_position: y)
   end
-
-  # def color
-  #   white? ? 'white' : 'black'
-  # end
-
-
+  
   def update_rook_if_castling(y)
     rook_at(8, y).update_attributes(x_position: 6, y_position: y) if castling_kingside?
     rook_at(1, y).update_attributes(x_position: 4, y_position: y) if castling_queenside?
@@ -119,6 +120,16 @@ class Piece < ApplicationRecord
   def piece_at(x, y)
     game.pieces.where(x_position: x, y_position: y).first
   end
+
+  # def color
+  #   white? ? 'white' : 'black'
+  # end
+  
+  # def black?
+  #   !white
+  # end
+
+  
 
 end
 

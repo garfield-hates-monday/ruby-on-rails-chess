@@ -18,6 +18,7 @@ class PiecesController < ApplicationController
       flash[:warning] = "Invalid move! Your piece is obstructed!"
     elsif @piece.valid_move?(params[:x_position].to_i, params[:y_position].to_i) == false
       flash[:warning] = "Invalid move! Your piece can't move in this way!"
+
     else
       @piece.move_to!(params[:x_position].to_i, params[:y_position].to_i)
       flash[:success] = "#{@piece.color.capitalize} #{@piece.type} moved to (#{@piece.x_position}, #{@piece.y_position})"
@@ -47,7 +48,7 @@ class PiecesController < ApplicationController
     @piece = Piece.find(params[:id])
     @piece.increment!(:moves)
   end
-
+  
   def piece_params
     params.permit(:x_position, :y_position, :type)
   end
