@@ -66,5 +66,15 @@ class Game < ApplicationRecord
   def black_player
     User.find_by_id(black_user_id)
   end
+
+  def pieces_remaining(color)
+    self.pieces.where(color: "#{color}", x_position: !nil, y_position: !nil)
+  end
+
+  def check?(color)
+    king = pieces.find_by(type: "King", color: color)
+    enemy_pieces = self.pieces.where.not(color: color, x_position: nil, y_position: nil)
+    enemy_pieces.any?{ |piece| piece.can_move_to?(king.x_position, king.y_position) }
+  end
 end
 
