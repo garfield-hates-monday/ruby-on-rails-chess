@@ -96,7 +96,6 @@ class Piece < ApplicationRecord
   # def black?
   #   !white
   # end
-
 end
 
 
