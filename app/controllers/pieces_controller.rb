@@ -42,14 +42,6 @@ class PiecesController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
-=======
-  def move_update
-    @piece = Piece.find(params[:id])
-    @piece.increment!(:moves)
-  end
-  
->>>>>>> ccef7adb5a5f74d4b7f444debb2365b81b5dfd07
   def piece_params
     params.permit(:x_position, :y_position, :type, :moves)
   end
