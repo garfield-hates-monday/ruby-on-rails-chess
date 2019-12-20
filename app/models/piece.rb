@@ -139,7 +139,6 @@ class Piece < ApplicationRecord
     else
     true
     end
-
   end
   
   def rook_at(x,y) #sees if there is a rook there that hasnt moved
@@ -170,6 +169,7 @@ class Piece < ApplicationRecord
   # def black?
   #   !white
   # end
+
 end
 
 
