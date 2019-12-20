@@ -14,6 +14,8 @@ class Piece < ApplicationRecord
       opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
     elsif opposing_piece.present?
       return 'invalid move'
+    elsif castling_queenside? || castling_kingside?
+      handle_castling
     end
     self.update_attributes(x_position: x, y_position: y)
   end
@@ -85,19 +87,23 @@ class Piece < ApplicationRecord
     y_difference = (y_position - y).abs
   end
 
+  def handle_castling
+    update_rook_if_castling(y)
+  end
+
   def castling_queenside?
     type == "King" &&
-    x_position == 1 &&
-    @piece.moves == 0 &&
-    y_position == @piece.color == "white" ? 8 : 0 &&
+    x_position == 3 &&
+    King.moves == 1 &&
+    y_position == white? ? 8 : 0 &&
     rook_at(1,y_position)
   end
 
   def castling_kingside?
     type == "King" &&
-    x_position == 8 &&
-    @piece.moves == 0 &&
-    y_position == @piece.color == "white" ? 8 : 0  &&
+    x_position == 7 &&
+    King.moves == 1 &&
+    y_position == white? ? 8 : 0  &&
     rook_at(8,y_position)
   end
 
@@ -109,10 +115,20 @@ class Piece < ApplicationRecord
   def rook_at(x,y)
     piece = piece_at(x,y)
     piece && piece.type == "Rook"
+
   end
 
-  def piece_at(x, y)
-    game.pieces.where(x_position: x, y_position: y).first
+  def piece_at(x,y)
+    game.pieces.where(x_position: x, y_position: y)
+  end
+
+
+  def white?
+    if piece.color == "white"
+      return true
+    else
+      return false
+    end
   end
 
 end

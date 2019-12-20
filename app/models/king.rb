@@ -4,9 +4,32 @@ class King < Piece
 
     if (x_difference(x) <= 1) && (y_difference(y) <= 1) && (x_difference(x) + y_difference(y) > 0) 
       return true
+    elsif castle_legal?(x, y)
+      return true
     else
       return false
     end
+  end
+
+  def castle_kingside_legal?(x, y)
+    return false if !rook_at(8, y)
+    return false if occupied?(7, y)
+    return true if x == 7
+    false
+  end
+
+  def castle_queenside_legal?(x, y)
+    return false if !rook_at(1, y) # || rook_at(1,y).moves != 0 can't find moves???
+    return false if occupied?(3, y)
+    return true if x == 3
+    false
+  end
+
+  def castle_legal?(x, y)
+    return false if piece_at(x,y).moves != 0
+    return false if is_obstructed?(new_x, new_y)
+    return true if castle_kingside_legal?(x, y) || castle_queenside_legal?(x, y)
+    false
   end
 
 end

@@ -10,12 +10,13 @@ class PiecesController < ApplicationController
     @piece = Piece.find(params[:id])
     @game = @piece.game
 
-    if @piece.user_id != current_user.id
-      flash[:error] = 'Invalid move, not your piece. Try another move.'
-    elsif @piece.user_id != @game.turn
-      flash[:error] = 'It is not your turn!'
-    elsif @piece.valid_move?(params[:x_position].to_i, params[:y_position].to_i) == false
+    #if @piece.user_id != @game.turn
+    #  flash[:error] = 'It is not your turn!'
+    #elsif @piece.user_id != current_user.id
+    #  flash[:error] = 'Invalid move, not your piece. Try another move.'
+    if @piece.valid_move?(params[:x_position].to_i, params[:y_position].to_i) == false
       flash[:warning] = "Invalid move!"
+    \
     else
       @piece.move_to!(params[:x_position].to_i, params[:y_position].to_i)
       flash[:success] = "#{@piece.color.capitalize} #{@piece.type} moved to (#{@piece.x_position}, #{@piece.y_position})"
@@ -47,7 +48,7 @@ class PiecesController < ApplicationController
   end
 
   def piece_params
-    params.permit(:x_position, :y_position, :type)
+    params.permit(:x_position, :y_position, :type, :moves)
   end
 end
 
