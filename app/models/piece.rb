@@ -133,11 +133,9 @@ class Piece < ApplicationRecord
 
   def update_rook_if_castling(y) #updates the rooks position when the king is moved to a castling spot
     if castling_kingside?
-      rook_locate(8, y).update_attributes(x_position: 6, y_position: y).increment!(:moves)
+      rook_locate(8, y).update_attributes(x_position: 6, y_position: y)
     elsif castling_queenside?
       rook_locate(1, y).update_attributes(x_position: 4, y_position: y).increment!(:moves)
-    else
-    true
     end
   end
   
