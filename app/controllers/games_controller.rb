@@ -1,4 +1,5 @@
 class GamesController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create, :index, :update]
 
   def new
     @game = Game.new
@@ -8,11 +9,16 @@ class GamesController < ApplicationController
     @game = Game.find_by_id(params[:id])
     @pieces = @game.pieces.all
     return render_not_found if @game.blank?
+    if @game.check?("black") == true
+      flash.now[:warning] = "Black is in check!"
+    end
+    if @game.check?("white") == true
+      flash.now[:warning] = "White is in check!"
+    end
   end
 
   def create
-    @game = Game.create(game_params)
-    @game.white_user_id = current_user
+    @game = Game.create(game_params.merge(white_user_id: current_user.id, turn: current_user.id))
     @game.save
 
     if @game.valid?
@@ -30,7 +36,8 @@ class GamesController < ApplicationController
 
   def update
     @game = Game.find(params[:id])
-    @game.update(black_user_id: current_user)
+    @game.update(black_user_id: current_user.id)
+    @game.reset_pieces_player
     redirect_to game_path
   end
 

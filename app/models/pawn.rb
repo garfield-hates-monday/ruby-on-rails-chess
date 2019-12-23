@@ -1,6 +1,4 @@
 class Pawn < Piece
-  attr_accessor :on_initial_square, :color
-  
 
   def valid_move?(x,y)
     x_distance = ( x - x_position ).abs
