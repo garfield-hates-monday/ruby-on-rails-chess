@@ -1,6 +1,123 @@
 require 'rails_helper'
 
 RSpec.describe Piece, type: :model do
+
+
+  describe "castling" do
+    it "should allow a white piece to kingside castle" do
+      game = Game.create
+      game.pieces.destroy_all
+      left_rook = game.pieces.create(x_position: 1, y_position: 8, color: "white", type: "Rook")
+      white_king = game.pieces.create(x_position: 5, y_position: 8, color: "white", type: "King")
+      right_rook = game.pieces.create(x_position: 8, y_position: 8, color: "white", type: "Rook")
+      white_king.move_to!(7,8)
+      white_king.reload
+      right_rook.reload
+      left_rook.reload
+      expect(white_king.x_position).to eq(7)
+      expect(white_king.y_position).to eq(8)
+      expect(right_rook.x_position).to eq(6)
+      expect(right_rook.y_position).to eq(8)
+      expect(left_rook.x_position).to eq(1)
+      expect(left_rook.y_position).to eq(8)
+    end
+
+    it "should allow a white piece to queenside castle" do
+      game = Game.create
+      game.pieces.destroy_all
+      left_rook = game.pieces.create(x_position: 1, y_position: 8, color: "white", type: "Rook")
+      white_king = game.pieces.create(x_position: 5, y_position: 8, color: "white", type: "King")
+      right_rook = game.pieces.create(x_position: 8, y_position: 8, color: "white", type: "Rook")
+      white_king.move_to!(3,8)
+      white_king.reload
+      right_rook.reload
+      left_rook.reload
+      expect(white_king.x_position).to eq(3)
+      expect(white_king.y_position).to eq(8)
+      expect(right_rook.x_position).to eq(8)
+      expect(right_rook.y_position).to eq(8)
+      expect(left_rook.x_position).to eq(4)
+      expect(left_rook.y_position).to eq(8)
+    end
+
+    it "should not allow a piece to castle if it is obstructed" do
+      game = Game.create
+      white_king = game.pieces.find_by(x_position: 5, y_position: 8, type: "King")
+      black_king = game.pieces.find_by(x_position: 5, y_position: 1, type: "King")
+      expect(white_king.castle_legal?(3,8)).to eq false
+      expect(white_king.castle_legal?(7,8)).to eq false
+      expect(black_king.castle_legal?(3,1)).to eq false
+      expect(black_king.castle_legal?(7,1)).to eq false
+    end
+
+    it "should not allow a King to castle if it has moved" do
+      game = Game.create
+      game.pieces.destroy_all
+      left_rook = game.pieces.create(x_position: 1, y_position: 8, color: "white", type: "Rook")
+      white_king = game.pieces.create(x_position: 5, y_position: 8, color: "white", type: "King", moves: 2)
+      right_rook = game.pieces.create(x_position: 8, y_position: 8, color: "white", type: "Rook")
+      expect(white_king.castle_legal?(3,8)).to eq false
+      expect(white_king.castle_legal?(7,8)).to eq false
+    end
+
+    it "should not allow a King to castle if the rook has moved" do
+      game = Game.create
+      game.pieces.destroy_all
+      left_rook = game.pieces.create(x_position: 1, y_position: 8, color: "white", type: "Rook", moves: 2)
+      white_king = game.pieces.create(x_position: 5, y_position: 8, color: "white", type: "King")
+      right_rook = game.pieces.create(x_position: 8, y_position: 8, color: "white", type: "Rook", moves: 2)
+      expect(white_king.castle_legal?(3,8)).to eq false
+      expect(white_king.castle_legal?(7,8)).to eq false
+    end
+
+    # it "should not allow a King to castle if a space it is crossing is being attacked by an opposing piece" do
+    #   game = Game.create
+    #   game.pieces.destroy_all
+    #   left_rook = game.pieces.create(x_position: 1, y_position: 8, color: "white", type: "Rook")
+    #   white_king = game.pieces.create(x_position: 5, y_position: 8, color: "white", type: "King")
+    #   right_rook = game.pieces.create(x_position: 8, y_position: 8, color: "white", type: "Rook")
+    #   black_rook1 = game.pieces.create(x_position: 6, y_position: 1, color: "black", type: "Rook")
+    #   black_rook2 = game.pieces.create(x_position: 4, y_position: 1, color: "black", type: "Rook")
+    #   expect(white_king.castle_legal?(3,8)).to eq false
+    #   expect(white_king.castle_legal?(7,8)).to eq false
+    # end
+    
+    it "should allow a black piece to kingside castle" do
+      game = Game.create
+      game.pieces.destroy_all
+      left_rook = game.pieces.create(x_position: 1, y_position: 1, color: "black", type: "Rook")
+      black_king = game.pieces.create(x_position: 5, y_position: 1, color: "black", type: "King")
+      right_rook = game.pieces.create(x_position: 8, y_position: 1, color: "black", type: "Rook")
+      black_king.move_to!(7,1)
+      black_king.reload
+      right_rook.reload
+      left_rook.reload
+      expect(black_king.x_position).to eq(7)
+      expect(black_king.y_position).to eq(1)
+      expect(right_rook.x_position).to eq(6)
+      expect(right_rook.y_position).to eq(1)
+      expect(left_rook.x_position).to eq(1)
+      expect(left_rook.y_position).to eq(1)
+    end
+
+    it "should allow a black piece to queenside castle" do
+      game = Game.create
+      game.pieces.destroy_all
+      left_rook = game.pieces.create(x_position: 1, y_position: 1, color: "black", type: "Rook")
+      black_king = game.pieces.create(x_position: 5, y_position: 1, color: "black", type: "King")
+      right_rook = game.pieces.create(x_position: 8, y_position: 1, color: "black", type: "Rook")
+      black_king.move_to!(3,1)
+      black_king.reload
+      right_rook.reload
+      left_rook.reload
+      expect(black_king.x_position).to eq(3)
+      expect(black_king.y_position).to eq(1)
+      expect(right_rook.x_position).to eq(8)
+      expect(right_rook.y_position).to eq(1)
+      expect(left_rook.x_position).to eq(4)
+      expect(left_rook.y_position).to eq(1)
+    end
+  end
   describe "King" do
     let(:game) { Game.create!(name: "Test Game" ) }
     let(:king) { King.create!( game: game, :x_position => 4, :y_position => 1, :color => "white" ) }

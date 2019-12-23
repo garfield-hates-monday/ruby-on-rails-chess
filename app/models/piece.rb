@@ -5,22 +5,6 @@ class Piece < ApplicationRecord
     #this method is implemented by the individual piece
   end
 
-
-  def move_to!(x, y)
-
-    return "invalid move" if valid_move?(x, y) == false
-    opposing_piece = game.pieces.find_by(x_position: x, y_position: y)
-    
-    if opposing_piece.present? && opposing_piece.color != self.color
-      opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
-    elsif opposing_piece.present?
-      return 'invalid move'
-    elsif castling_queenside? || castling_kingside?
-      handle_castling
-    end
-    self.update_attributes(x_position: x, y_position: y)
-  end
-
   def is_obstructed?(new_x, new_y)
     direction = move_direction(new_x, new_y)
     if direction == 'horizontal'
@@ -106,68 +90,37 @@ class Piece < ApplicationRecord
     end
     self.update_attributes(x_position: x, y_position: y)
     self.increment!(:moves)
-    if castling_queenside? || castling_kingside?
-      handle_castling(y)
+    if castling_queenside?(x, y) == true 
+     rook = game.pieces.find_by(x_position: 1, y_position: y, type: "Rook")
+     rook.update_attributes(x_position: 4, y_position: y)
+     rook.increment!(:moves)
+    end
+    if castling_kingside?(x, y) == true
+      rook = game.pieces.find_by(x_position: 8, y_position: y, type: "Rook")
+      rook.update_attributes(x_position: 6, y_position: y)
+      rook.increment!(:moves)
     end
   end
 
-  def handle_castling(y) #triggered once the king is moved to a castling spot
-    update_rook_if_castling(y)
+  def castling_queenside?(x, y) #tests to see if king is castling towards queenside
+    return true if game.pieces.where(x_position: 3, y_position: y, type: "King").present? && rook_at(1, y)
   end
 
-  def castling_queenside? #tests to see if king is castling towards kingside
-    type == "King" &&
-    x_position == 3 &&
-    self.moves == 1 &&
-    y_position == white? ? 8 : 0 &&
-    rook_at(1,y_position)
-  end
-
-  def castling_kingside? #tests to see if king is castling towards kingside
-    type == "King" &&
-    x_position == 7 &&
-    self.moves == 1 &&
-    y_position == white? ? 8 : 0  &&
-    rook_at(8,y_position)
-  end
-
-  def update_rook_if_castling(y) #updates the rooks position when the king is moved to a castling spot
-    if castling_kingside?
-      rook_locate(8, y).update_attributes(x_position: 6, y_position: y)
-    elsif castling_queenside?
-      rook_locate(1, y).update_attributes(x_position: 4, y_position: y).increment!(:moves)
-    end
+  def castling_kingside?(x, y) #tests to see if king is castling towards kingside
+    return true if game.pieces.where(x_position: 7, y_position: y, type: "King").present? && rook_at(8, y)
   end
   
   def rook_at(x,y) #sees if there is a rook there that hasnt moved
     game.pieces.where(:x_position => x, :y_position => y, :type => "Rook", :moves => 0).present?
   end
-
-  def rook_locate(x, y) #finds if there is a rook located here
-    piece = piece_at(x, y)
-    piece && piece.type == 'Rook' ? piece : nil
-  end
-
-  def piece_at(x,y)
-    game.pieces.find_by(x_position: x, y_position: y)
-  end
-
+  
   def white?
-    if piece.color == "white"
+    if self.color == "white"
       return true
     else
       return false
     end
   end
-
-
-  # def color
-  #   white? ? 'white' : 'black'
-  # end
-  # def black?
-  #   !white
-  # end
-
 end
 
 
