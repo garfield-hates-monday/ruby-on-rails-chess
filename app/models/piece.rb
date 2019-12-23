@@ -89,19 +89,38 @@ class Piece < ApplicationRecord
       return 'invalid move'
     end
     self.update_attributes(x_position: x, y_position: y)
+    self.increment!(:moves)
+    if castling_queenside?(x, y) == true 
+     rook = game.pieces.find_by(x_position: 1, y_position: y, type: "Rook")
+     rook.update_attributes(x_position: 4, y_position: y)
+     rook.increment!(:moves)
+    end
+    if castling_kingside?(x, y) == true
+      rook = game.pieces.find_by(x_position: 8, y_position: y, type: "Rook")
+      rook.update_attributes(x_position: 6, y_position: y)
+      rook.increment!(:moves)
+    end
   end
 
-  # def color
-  #   white? ? 'white' : 'black'
-  # end
+  def castling_queenside?(x, y) #tests to see if king is castling towards queenside
+    return true if game.pieces.where(x_position: 3, y_position: y, type: "King").present? && rook_at(1, y)
+  end
 
-  # def white?
-  #   white
-  # end
-
-  # def black?
-  #   !white
-  # end
+  def castling_kingside?(x, y) #tests to see if king is castling towards kingside
+    return true if game.pieces.where(x_position: 7, y_position: y, type: "King").present? && rook_at(8, y)
+  end
+  
+  def rook_at(x,y) #sees if there is a rook there that hasnt moved
+    game.pieces.where(:x_position => x, :y_position => y, :type => "Rook", :moves => 0).present?
+  end
+  
+  def white?
+    if self.color == "white"
+      return true
+    else
+      return false
+    end
+  end
 end
 
 
