@@ -79,13 +79,21 @@ class Game < ApplicationRecord
   def check?(color)
     king = pieces.find_by(type: "King", color: color)
     enemy_pieces = self.pieces.where.not(color: color, x_position: nil, y_position: nil)
-    enemy_pieces.any?{ |piece| piece.can_move_to?(king.x_position, king.y_position) }
+    enemy_pieces.each do |piece|
+      if piece.can_move_to?(king.x_position, king.y_position)
+        @piece_checking_king = piece
+        return true
+      end
+    end
+    return false
   end
 
-  def checkmate(color)
+  def checkmate?(color)
     king_in_check = pieces.find_by(type: "King", color: color)
     return false unless check?(color)
-    return false if king_in_check.can_move_to?(king.x_position, king.y_position)
+    return false if @piece_checking_king.capturable?
+    return false if king_in_check.can_move_to?(king_in_check.x_position + 1, king_in_check.y_position + 1)
+    return false if @piece_checking_king.can_be_obstructed?(king_in_check)
     true
   end
 end

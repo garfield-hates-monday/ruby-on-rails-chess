@@ -91,17 +91,8 @@ class Piece < ApplicationRecord
     self.update_attributes(x_position: x, y_position: y)
   end
 
-  # def color
-  #   white? ? 'white' : 'black'
-  # end
-
-  # def white?
-  #   white
-  # end
-
-  # def black?
-  #   !white
-  # end
+  def capturable?
+    enemy_pieces = game.pieces_remaining(!color)
+    enemy_pieces.any? { |piece| piece.can_move_to?(self.x_position, self.y_position) }
+  end
 end
-
-
