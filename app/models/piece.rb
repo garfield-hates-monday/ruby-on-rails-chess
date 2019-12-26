@@ -88,6 +88,17 @@ class Piece < ApplicationRecord
     elsif opposing_piece.present?
       return 'invalid move'
     end
+    if self.type == "Pawn" && en_passant?(x,y) == true
+      if white?
+        y_end = y - 1
+        opposing_piece = game.pieces.find_by(x_position: x, y_position: y_end, type: "Pawn")
+        opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
+      elsif !white?
+        y_end = y + 1
+        opposing_piece = game.pieces.find_by(x_position: x, y_position: y_end, type: "Pawn")
+        opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
+      end
+    end
     self.update_attributes(x_position: x, y_position: y)
     self.increment!(:moves)
     if castling_queenside?(x, y) == true 
@@ -121,6 +132,7 @@ class Piece < ApplicationRecord
       return false
     end
   end
+
 end
 
 

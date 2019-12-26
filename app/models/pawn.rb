@@ -37,7 +37,7 @@ class Pawn < Piece
   def en_passant?(new_x_position, new_y_position)
     return false unless ((new_y_position == (y_position + 1) && !white?) || (new_y_position == (y_position - 1) && white?)) && new_x_position == (x_position + 1) || new_x_position == (x_position - 1) && new_y_position == 3 && white? || new_y_position == 6 && !white?
     other_piece = game.pieces.where(y_position: y_position, x_position: new_x_position, type: "Pawn").first
-    return false if other_piece.nil? || other_piece.move_number != 1
+    return false if other_piece.nil? || other_piece.moves != 1
     return true
   end
 
