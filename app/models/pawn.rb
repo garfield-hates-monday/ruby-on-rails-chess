@@ -4,10 +4,10 @@ class Pawn < Piece
     if en_passant?(x, y)
       return true 
     #black diagonal capture
-    elsif y == (self.y_position - 1) && x_difference(x) == y_difference(y) && !white? && occupied?(x,y)
+    elsif y == capture && x_difference(x) == y_difference(y) && !white? && occupied?(x,y)
       return true
     #white diagonal capture
-    elsif y == (self.y_position + 1) && x_difference(x) == y_difference(y) && white? && occupied?(x,y)
+    elsif y == capture && x_difference(x) == y_difference(y) && white? && occupied?(x,y)
       return true
     #black starting position (move 2)
     elsif y_position == 2 && !white? && !is_obstructed?(x, y) && y == (self.y_position + 2) && x_difference(x) == 0
@@ -26,9 +26,13 @@ class Pawn < Piece
     end
   end
 
-
-
-
+  def capture
+    if white?
+      y_position - 1
+    else
+      y_position + 1
+    end
+  end
 
   def en_passant?(new_x_position, new_y_position)
     return false unless ((new_y_position == (y_position + 1) && !white?) || (new_y_position == (y_position - 1) && white?)) && new_x_position == (x_position + 1) || new_x_position == (x_position - 1) && new_y_position == 3 && white? || new_y_position == 6 && !white?
