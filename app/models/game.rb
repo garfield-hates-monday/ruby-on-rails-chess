@@ -3,6 +3,11 @@ class Game < ApplicationRecord
   has_many :pieces, dependent: :destroy
   after_create :populate_game
 
+  def reset_pieces_player
+    pieces.where(color: "black").update_all(user_id: black_user_id)
+    pieces.where(color: "white").update_all(user_id: white_user_id)
+  end
+
   def populate_game
     # WHITE PIECES
       # Pawns
@@ -65,6 +70,16 @@ class Game < ApplicationRecord
 
   def black_player
     User.find_by_id(black_user_id)
+  end
+
+  def pieces_remaining(color)
+    self.pieces.where(color: "#{color}", x_position: !nil, y_position: !nil)
+  end
+
+  def check?(color)
+    king = pieces.find_by(type: "King", color: color)
+    enemy_pieces = self.pieces.where.not(color: color, x_position: nil, y_position: nil)
+    enemy_pieces.any?{ |piece| piece.can_move_to?(king.x_position, king.y_position) }
   end
 end
 
