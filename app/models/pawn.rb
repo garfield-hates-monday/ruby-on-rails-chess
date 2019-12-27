@@ -16,10 +16,10 @@ class Pawn < Piece
     elsif y_position == 7 && white? && !is_obstructed?(x, y) && y == (self.y_position - 2) && x_difference(x) == 0
       return true
     #black post initial move
-    elsif !white? && !is_obstructed?(x, y) && x_difference(x) == 0 && y == (self.y_position + 1)
+    elsif !white? && !occupied?(x, y) && x_difference(x) == 0 && y == (self.y_position + 1)
       return true
     #white post initial move
-    elsif white? && !is_obstructed?(x, y) && x_difference(x) == 0 && y == (self.y_position - 1)
+    elsif white? && !occupied?(x, y) && x_difference(x) == 0 && y == (self.y_position - 1)
       return true
     else
       return false

@@ -2,6 +2,77 @@ require 'rails_helper'
 
 RSpec.describe Piece, type: :model do
 
+  describe "Pawn moves" do
+    it "should allow you to move two spots on opening space" do
+      game = Game.create
+      game.pieces.destroy_all
+      white_pawn = game.pieces.create(x_position: 2, y_position: 7, color: "white", type: "Pawn")
+      black_pawn = game.pieces.create(x_position: 3, y_position: 2, color: "black", type: "Pawn")
+      expect(white_pawn.valid_move?(2,5)).to eq(true)
+      expect(black_pawn.valid_move?(3,4)).to eq(true)
+    end
+
+    it "shouldn't allow you to move two spots if not on opening space" do
+      game = Game.create
+      game.pieces.destroy_all
+      white_pawn = game.pieces.create(x_position: 2, y_position: 6, color: "white", type: "Pawn")
+      black_pawn = game.pieces.create(x_position: 3, y_position: 3, color: "black", type: "Pawn")
+      expect(white_pawn.valid_move?(2,4)).to eq(false)
+      expect(black_pawn.valid_move?(3,5)).to eq(false)
+    end
+
+    it "should allow you to move diagonal if there is an opposing_piece" do
+      game = Game.create
+      game.pieces.destroy_all
+      white_pawn = game.pieces.create(x_position: 2, y_position: 6, color: "white", type: "Pawn")
+      black_pawn = game.pieces.create(x_position: 3, y_position: 5, color: "black", type: "Pawn")
+      expect(white_pawn.valid_move?(3,5)).to eq(true)
+      expect(black_pawn.valid_move?(2,6)).to eq(true)
+    end
+    it "shouldn't allow you to move diagonal if there is not an opposing_piece" do
+      game = Game.create
+      game.pieces.destroy_all
+      white_pawn = game.pieces.create(x_position: 2, y_position: 6, color: "white", type: "Pawn")
+      black_pawn = game.pieces.create(x_position: 3, y_position: 5, color: "black", type: "Pawn")
+      expect(white_pawn.valid_move?(1,5)).to eq(false)
+      expect(black_pawn.valid_move?(4,6)).to eq(false)
+    end
+    it "shouldn't allow you to move backwards" do
+      game = Game.create
+      game.pieces.destroy_all
+      white_pawn = game.pieces.create(x_position: 2, y_position: 6, color: "white", type: "Pawn")
+      black_pawn = game.pieces.create(x_position: 3, y_position: 5, color: "black", type: "Pawn")
+      expect(white_pawn.valid_move?(2,7)).to eq(false)
+      expect(black_pawn.valid_move?(3,4)).to eq(false)
+    end
+    it "shouldn't allow you to move forward if there is a piece there" do
+      game = Game.create
+      game.pieces.destroy_all
+      white_pawn = game.pieces.create(x_position: 2, y_position: 6, color: "white", type: "Pawn")
+      black_pawn = game.pieces.create(x_position: 2, y_position: 5, color: "black", type: "Pawn")
+      expect(white_pawn.valid_move?(2,5)).to eq(false)
+      expect(black_pawn.valid_move?(3,6)).to eq(false)
+    end
+    it "should allow you to do en passant if opposing piece only has 1 move" do
+      game = Game.create
+      game.pieces.destroy_all
+      white_pawn = game.pieces.create(x_position: 4, y_position: 4, color: "white", type: "Pawn", moves: 2)
+      black_pawn = game.pieces.create(x_position: 3, y_position: 4, color: "black", type: "Pawn", moves: 1)
+      expect(white_pawn.valid_move?(3,3)).to eq(true)
+      white_pawn.move_to!(3,3)
+      white_pawn.reload
+      black_pawn.reload
+      expect(black_pawn.captured).to eq(true)
+    end
+    it "shouldn't allow you to do en passant if opposing piece only has 1 move" do
+      game = Game.create
+      game.pieces.destroy_all
+      white_pawn = game.pieces.create(x_position: 4, y_position: 4, color: "white", type: "Pawn", moves: 2)
+      black_pawn = game.pieces.create(x_position: 3, y_position: 4, color: "black", type: "Pawn", moves: 2)
+      expect(white_pawn.valid_move?(3,3)).to eq(false)
+    end
+  end
+
 
   describe "castling" do
     it "should allow a white piece to kingside castle" do
