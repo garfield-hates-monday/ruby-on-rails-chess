@@ -9,23 +9,31 @@
         <div class="booyah-box col-md-6 col-sm-12">
           <h3><%= game.name %></h3>
           <h4>Game id: <%= game.id %></h4>
+          <% turn_user = User.find_by(id: game.turn) %>
+          <% black_player = User.find_by(id: game.black_user_id) %>
+          <% white_player = User.find_by(id: game.white_user_id) %>
           <% if game.white_user_id == current_user.id %>
-            <% black_player = User.find_by(id: game.black_user_id) %>
             Opponent: <%= black_player.email %>
             <br>
             Status: <%= game.state %>
             <br>
-            Turn: <%= game.turn %>
+            <% if turn_user == current_user %>
+              Turn: Your Turn
+            <% else %>
+              Turn: <%= turn_user.email %>
+            <% end %>
             <br>
             <%= link_to 'Go to Game', game_path(game), class: 'btn btn-primary float-right' %>  
           <% else %>
-            <% white_player = User.find_by(id: game.white_user_id) %>
             Opponent: <%= white_player.email %>
             <br>
             Status: <%= game.state %>
             <br>
-            Turn: <%= game.turn %>
-            <br>
+            <% if turn_user == current_user %>
+              Turn: Your Turn
+            <% else %>
+              Turn: <%= turn_user.email %>
+            <% end %>
             <%= link_to 'Go to Game', game_path(game), class: 'btn btn-primary float-right' %>
           <% end %>
         </div>
