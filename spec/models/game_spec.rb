@@ -52,6 +52,13 @@ require 'rails_helper'
         expect(game.checkmate?("white")).to eq false
       end 
 
+      it "should return false if the piece putting the king in check can be obstructed" do
+
+      end
+
+      it "should return false if the King can move itself out of check" do
+
+      end
     end
   end
 

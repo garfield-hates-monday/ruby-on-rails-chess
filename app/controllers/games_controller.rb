@@ -9,10 +9,14 @@ class GamesController < ApplicationController
     @game = Game.find_by_id(params[:id])
     @pieces = @game.pieces.all
     return render_not_found if @game.blank?
-    if @game.check?("black") == true
+    if @game.check?("black") == true && @game.checkmate?("black") == true
+      flash.now[:warning] = "Checkmate! White wins!"
+    elsif @game.check?("black") == true
       flash.now[:warning] = "Black is in check!"
     end
-    if @game.check?("white") == true
+    if @game.check?("white") == true && @game.checkmate?("white") == true
+      flash.now[:warning] = "Checkmate! Black wins!"
+    elsif @game.check?("white") == true
       flash.now[:warning] = "White is in check!"
     end
   end

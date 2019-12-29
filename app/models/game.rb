@@ -73,7 +73,7 @@ class Game < ApplicationRecord
   end
 
   def pieces_remaining(color)
-    self.pieces.where(color: "#{color}", x_position: !nil, y_position: !nil)
+    self.pieces.where(color: color, x_position: !nil, y_position: !nil)
   end
 
   def check?(color)
@@ -91,9 +91,15 @@ class Game < ApplicationRecord
   def checkmate?(color)
     king_in_check = pieces.find_by(type: "King", color: color)
     return false unless check?(color)
-    return false if @piece_checking_king.capturable?
-    return false if king_in_check.can_move_to?(king_in_check.x_position + 1, king_in_check.y_position + 1)
-    return false if @piece_checking_king.can_be_obstructed?(king_in_check)
+    enemy_pieces = self.pieces.where.not(color: color, x_position: nil, y_position: nil)
+    enemy_pieces.each do |piece|
+      if piece.can_move_to?(king_in_check.x_position, king_in_check.y_position)
+        @piece_checking_king = piece
+      end
+    end
+    return false if @piece_checking_king.capturable?(@piece_checking_king.color)
+    # return false if king_in_check.can_move_to?(king_in_check.x_position + 1, king_in_check.y_position + 1) --> I think the card for not letting you move a piece into check needs to be completed
+    # return false if @piece_checking_king.can_be_obstructed?(king_in_check) --> method needs to be added
     true
   end
 end

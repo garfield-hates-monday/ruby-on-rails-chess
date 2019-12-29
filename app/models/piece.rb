@@ -91,8 +91,9 @@ class Piece < ApplicationRecord
     self.update_attributes(x_position: x, y_position: y)
   end
 
-  def capturable?
-    enemy_pieces = game.pieces_remaining(!color)
-    enemy_pieces.any? { |piece| piece.can_move_to?(self.x_position, self.y_position) }
+  def capturable?(color)
+    piece_being_checked = game.pieces.find_by(x_position: self.x_position, y_position: self.y_position)
+    enemy_pieces = game.pieces.where.not(color: color, x_position: nil, y_position: nil)
+    enemy_pieces.any? { |piece| piece.can_move_to?(piece_being_checked.x_position, piece_being_checked.y_position) }
   end
 end
