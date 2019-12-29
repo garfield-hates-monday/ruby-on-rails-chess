@@ -98,7 +98,7 @@ class Game < ApplicationRecord
       end
     end
     return false if @piece_checking_king.capturable?(@piece_checking_king.color)
-    # return false if king_in_check.can_move_to?(king_in_check.x_position + 1, king_in_check.y_position + 1) --> I think the card for not letting you move a piece into check needs to be completed
+    return false if king_in_check.possible_moves.any? {|move| king_in_check.can_move_to?(king_in_check.x_position + move[0], king_in_check.y_position + move[1]) }
     # return false if @piece_checking_king.can_be_obstructed?(king_in_check) --> method needs to be added
     true
   end
