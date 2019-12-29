@@ -91,6 +91,9 @@ class Game < ApplicationRecord
 
   def checkmate?(color)
     king_in_check = pieces.find_by(type: "King", color: color)
+    original_x = king_in_check.x_position
+    original_y = king_in_check.y_position
+    escape_moves = []
     return false unless check?(color)
     enemy_pieces = self.pieces.where.not(color: color, x_position: nil, y_position: nil)
     enemy_pieces.each do |piece|
@@ -99,7 +102,15 @@ class Game < ApplicationRecord
       end
     end
     return false if @piece_checking_king.capturable?(@piece_checking_king.color)
-    return false if king_in_check.possible_moves.any? {|move| king_in_check.can_move_to?(king_in_check.x_position + move[0], king_in_check.y_position + move[1]) }
+    king_in_check.possible_moves.each do |move|
+      king_in_check.move_to!(king_in_check.x_position + move[0], king_in_check.y_position + move[1])
+      king_in_check.reload
+      if king_in_check.x_position != original_x && king_in_check.y_position != original_y && king_in_check.x_position > 0 && king_in_check.y_position > 0
+        escape_moves << move
+      end
+      king_in_check.update_attributes(x_position: original_x, y_position: original_y)
+    end
+    return false if escape_moves.any?
     # return false if @piece_checking_king.can_be_obstructed?(king_in_check) --> method needs to be added
     true
   end
