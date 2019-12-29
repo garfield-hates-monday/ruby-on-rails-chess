@@ -126,6 +126,12 @@ class Piece < ApplicationRecord
   def rook_at(x,y) #sees if there is a rook there that hasnt moved
     game.pieces.where(:x_position => x, :y_position => y, :type => "Rook", :moves => 0).present?
   end
+
+  def capturable?(color)
+    piece_being_checked = game.pieces.find_by(x_position: self.x_position, y_position: self.y_position)
+    enemy_pieces = game.pieces.where.not(color: color, x_position: nil, y_position: nil)
+    enemy_pieces.any? { |piece| piece.can_move_to?(piece_being_checked.x_position, piece_being_checked.y_position) }
+  end
   
   def white?
     if self.color == "white"

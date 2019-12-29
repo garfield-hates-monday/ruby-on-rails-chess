@@ -13,6 +13,7 @@ class King < Piece
 
   def possible_moves
    [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1], [-1, -1], [1, -1]]
+  end
 
   def castle_kingside_legal?(x, y) #checks to make sure moving kingside is allowed
     return false if self.moves > 0
@@ -36,6 +37,7 @@ class King < Piece
     return true if castle_kingside_legal?(x, y) || castle_queenside_legal?(x, y)
     false
   end
+
   def white?
     if self.color == "white"
       return true
