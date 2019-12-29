@@ -19,6 +19,14 @@ require 'rails_helper'
         blocking_pawn = Pawn.create(game_id: game.id, x_position: 5, y_position: 4, color: "white")
         expect(game.check?("black")).to eq false
       end
+
+      it "should not allow me to move a piece that would put myself in check"
+        game = Game.create
+        game.pieces.destroy_all
+        king = King.create(game_id: game.id, x_position: 4, y_position: 4, color: "white")
+        pawn = Pawn.create(game_id: game.id, x_position: 3, y_position: 3, color: "white")
+        enemy_bishop = Bishop.create(game_id: game.id, x_position: 1, y_position: 2, color: "black")
+        expect(pawn.move_to!(3,2)).to eq false
     end
 
     describe 'checkmate?' do
