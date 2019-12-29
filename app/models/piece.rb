@@ -88,19 +88,51 @@ class Piece < ApplicationRecord
     elsif opposing_piece.present?
       return false
     end
+    
+    if self.type == "Pawn" && self.en_passant?(x,y) == true
+      opposing_pawn = game.pieces.find_by(:x_position => x, :y_position => self.y_position, :type => "Pawn")
+      opposing_pawn.update_attributes(x_position: nil, y_position: nil, captured: true)
+    end
+    
     self.transaction do
       self.update_attributes(x_position: x, y_position: y)
+      self.increment!(:moves)
       if game.check?(self.color)
         fail ActiveRecord::Rollback
         return false
       end
     end
-    return true
+   
+    if castling_queenside?(x, y) == true 
+     rook = game.pieces.find_by(x_position: 1, y_position: y, type: "Rook")
+     rook.update_attributes(x_position: 4, y_position: y)
+     rook.increment!(:moves)
+    end
+    if castling_kingside?(x, y) == true
+      rook = game.pieces.find_by(x_position: 8, y_position: y, type: "Rook")
+      rook.update_attributes(x_position: 6, y_position: y)
+      rook.increment!(:moves)
+    end
   end
 
-  def capturable?(color)
-    piece_being_checked = game.pieces.find_by(x_position: self.x_position, y_position: self.y_position)
-    enemy_pieces = game.pieces.where.not(color: color, x_position: nil, y_position: nil)
-    enemy_pieces.any? { |piece| piece.can_move_to?(piece_being_checked.x_position, piece_being_checked.y_position) }
+  def castling_queenside?(x, y) #tests to see if king is castling towards queenside
+    return true if game.pieces.where(x_position: 3, y_position: y, type: "King").present? && rook_at(1, y)
   end
+
+  def castling_kingside?(x, y) #tests to see if king is castling towards kingside
+    return true if game.pieces.where(x_position: 7, y_position: y, type: "King").present? && rook_at(8, y)
+  end
+  
+  def rook_at(x,y) #sees if there is a rook there that hasnt moved
+    game.pieces.where(:x_position => x, :y_position => y, :type => "Rook", :moves => 0).present?
+  end
+  
+  def white?
+    if self.color == "white"
+      return true
+    else
+      return false
+    end
+  end
+
 end

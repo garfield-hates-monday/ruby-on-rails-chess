@@ -50,7 +50,7 @@ class PiecesController < ApplicationController
   end
 
   def piece_params
-    params.permit(:x_position, :y_position, :type)
+    params.permit(:x_position, :y_position, :type, :moves)
   end
 end
 

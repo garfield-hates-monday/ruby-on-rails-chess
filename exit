@@ -1,0 +1,13 @@
+[1mdiff --git a/app/controllers/games_controller.rb b/app/controllers/games_controller.rb[m
+[1mindex e07ab37..7fc41b3 100644[m
+[1m--- a/app/controllers/games_controller.rb[m
+[1m+++ b/app/controllers/games_controller.rb[m
+[36m@@ -7,7 +7,7 @@[m [mclass GamesController < ApplicationController[m
+ [m
+   def show[m
+     @game = Game.find_by_id(params[:id])[m
+[31m-    @pieces = @game.pieces.all[m
+[32m+[m[32m    @pieces = @game.pieces.all[m[41m [m
+     return render_not_found if @game.blank?[m
+     if @game.check?("black") == true[m
+       flash.now[:warning] = "Black is in check!"[m
