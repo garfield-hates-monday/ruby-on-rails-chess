@@ -86,9 +86,16 @@ class Piece < ApplicationRecord
     if opposing_piece.present? && opposing_piece.color != self.color
       opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
     elsif opposing_piece.present?
-      return 'invalid move'
+      return false
     end
-    self.update_attributes(x_position: x, y_position: y)
+    self.transaction do
+      self.update_attributes(x_position: x, y_position: y)
+      if game.check?(self.color)
+        fail ActiveRecord::Rollback
+        return false
+      end
+    end
+    return true
   end
 
   def capturable?(color)

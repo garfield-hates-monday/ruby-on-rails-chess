@@ -2,6 +2,7 @@ class Game < ApplicationRecord
   belongs_to :user, optional: true
   has_many :pieces, dependent: :destroy
   after_create :populate_game
+  after_rollback :check_yourself_error
 
   def reset_pieces_player
     pieces.where(color: "black").update_all(user_id: black_user_id)
@@ -101,6 +102,10 @@ class Game < ApplicationRecord
     return false if king_in_check.possible_moves.any? {|move| king_in_check.can_move_to?(king_in_check.x_position + move[0], king_in_check.y_position + move[1]) }
     # return false if @piece_checking_king.can_be_obstructed?(king_in_check) --> method needs to be added
     true
+  end
+
+  def check_yourself_error
+    flash[:warning] = "This move will put your King in check!"
   end
 end
 

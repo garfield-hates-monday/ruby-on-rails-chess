@@ -9,6 +9,8 @@ class PiecesController < ApplicationController
   def update
     @piece = Piece.find(params[:id])
     @game = @piece.game
+    @original_x = @piece.x_position
+    @original_y = @piece.y_position
 
     if @piece.user_id != current_user.id
       flash[:error] = 'Invalid move, not your piece. Try another move.'
@@ -18,11 +20,15 @@ class PiecesController < ApplicationController
       flash[:warning] = "Invalid move! Your piece is obstructed!"
     elsif @piece.valid_move?(params[:x_position].to_i, params[:y_position].to_i) == false
       flash[:warning] = "Invalid move! Your piece can't move in this way!"
-
     else
       @piece.move_to!(params[:x_position].to_i, params[:y_position].to_i)
-      flash[:success] = "#{@piece.color.capitalize} #{@piece.type} moved to (#{@piece.x_position}, #{@piece.y_position})"
-      turn_update
+      @piece.reload
+      if @piece.x_position == @original_x && @piece.y_position == @original_y
+        flash[:warning] = "This move will put your piece in check!"
+      else
+        flash[:success] = "#{@piece.color.capitalize} #{@piece.type} moved to (#{@piece.x_position}, #{@piece.y_position})"
+        turn_update
+      end
     end
     redirect_to game_url(@game)
   end
