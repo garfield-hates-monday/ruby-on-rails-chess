@@ -5,6 +5,76 @@ class Piece < ApplicationRecord
     #this method is implemented by the individual piece
   end
 
+  def can_be_obstructed?(king)
+    check_obstruction_squares = checked_squares(king.x_position, king.y_position)
+
+  end
+
+  def checked_squares(x, y)
+    checked_squares_array = []
+    direction = move_direction(new_x, new_y)
+    if direction == 'horizontal'
+      if new_x > self.x_position
+        (self.x_position + 1).upto(new_x - 1) do |x_current|
+          if occupied?(x_current, self.y_position) == false
+            checked_squares_array << [x_current, self.y_position]
+          end
+        end
+      else
+        (self.x_position - 1).downto(new_x + 1) do |x_current|
+          if occupied?(x_current, self.y_position) == false
+            checked_squares_array << [x_current, self.y_position]
+          end
+        end
+      end
+    elsif direction == 'vertical'
+      if new_y > self.y_position
+        (self.y_position + 1).upto(new_y - 1) do |y_current|
+          if occupied?(self.x_position, y_current) == false
+            checked_squares_array << [self.x_position, y_current]
+          end
+        end
+      else
+        (self.y_position - 1).downto(new_y + 1) do |y_current|
+          if occupied?(self.x_position, y_current) == false
+            checked_squares_array << [self.x_position, y_current]
+          end
+        end
+      end
+    elsif direction == 'diagonal'
+      if new_x > self.x_position && new_y > self.y_position
+        (self.x_position + 1).upto(new_x - 1) do |x_current|
+          y_current = self.y_position + (x_current - self.x_position)
+          if occupied?(x_current, y_current) == false
+            checked_squares_array << [x_current, y_current]
+          end
+        end
+      elsif new_x < self.x_position && new_y > self.y_position
+        (self.x_position - 1).downto(new_x + 1) do |x_current|
+          y_current = self.y_position + (x_current - self.x_position).abs
+          if occupied?(x_current, y_current) == false
+            checked_squares_array << [x_current, y_current]
+          end
+        end
+      elsif new_x > self.x_position && new_y < self.y_position
+        (self.x_position + 1).upto(new_x - 1) do |x_current|
+          y_current = self.y_position - (x_current - self.x_position)
+          if occupied?(x_current, y_current) == false
+            checked_squares_array << [x_current, y_current]
+          end
+        end
+      else
+        (self.x_position - 1).downto(new_x + 1) do |x_current|
+          y_current = self.y_position - (x_current - self.x_position).abs
+          if occupied?(x_current, y_current) == false
+            checked_squares_array << [x_current, y_current]
+          end
+        end
+      end
+    end
+    return checked_squares_array
+  end
+
   def is_obstructed?(new_x, new_y)
     direction = move_direction(new_x, new_y)
     if direction == 'horizontal'
