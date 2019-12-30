@@ -7,10 +7,18 @@ class Piece < ApplicationRecord
 
   def can_be_obstructed?(king)
     check_obstruction_squares = checked_squares(king.x_position, king.y_position)
+    enemy_pieces = game.pieces.where.not(x_position: nil, y_position: nil, color: self.color)
 
+    enemy_pieces.each do |piece|
+      next if piece.type == "King"
+      check_obstruction_squares.each do |square|
+        return true if piece.can_move_to?(square[0], square[1])
+      end
+    end
+    false
   end
 
-  def checked_squares(x, y)
+  def checked_squares(new_x, new_y)
     checked_squares_array = []
     direction = move_direction(new_x, new_y)
     if direction == 'horizontal'

@@ -64,7 +64,13 @@ require 'rails_helper'
       end 
 
       it "should return false if the piece putting the king in check can be obstructed" do
-
+        game = Game.create
+        king = game.pieces.find_by(type: "King", color: "white")
+        king.update_attributes(x_position: 1, y_position: 6)
+        rook1 = Rook.create(game_id: game.id, x_position: 1, y_position: 3, color: "black")
+        rook2 = Rook.create(game_id: game.id, x_position: 2, y_position: 3, color: "black")
+        white_rook = Bishop.create(game_id: game.id, x_position: 3, y_position: 5, color: "white")
+        expect(game.checkmate?("white")).to eq false
       end
 
       it "should return false if the King can move itself out of check" do

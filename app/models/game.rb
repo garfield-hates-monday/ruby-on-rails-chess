@@ -111,7 +111,7 @@ class Game < ApplicationRecord
       king_in_check.update_attributes(x_position: original_x, y_position: original_y)
     end
     return false if escape_moves.any?
-    # return false if @piece_checking_king.can_be_obstructed?(king_in_check) --> method needs to be added. I will add this today.
+    return false if @piece_checking_king.can_be_obstructed?(king_in_check)
     true
   end
 
