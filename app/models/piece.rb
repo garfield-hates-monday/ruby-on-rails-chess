@@ -5,6 +5,84 @@ class Piece < ApplicationRecord
     #this method is implemented by the individual piece
   end
 
+  def can_be_obstructed?(king)
+    check_obstruction_squares = checked_squares(king.x_position, king.y_position)
+    enemy_pieces = game.pieces.where.not(x_position: nil, y_position: nil, color: self.color)
+
+    enemy_pieces.each do |piece|
+      next if piece.type == "King"
+      check_obstruction_squares.each do |square|
+        return true if piece.can_move_to?(square[0], square[1])
+      end
+    end
+    false
+  end
+
+  def checked_squares(new_x, new_y)
+    checked_squares_array = []
+    direction = move_direction(new_x, new_y)
+    if direction == 'horizontal'
+      if new_x > self.x_position
+        (self.x_position + 1).upto(new_x - 1) do |x_current|
+          if occupied?(x_current, self.y_position) == false
+            checked_squares_array << [x_current, self.y_position]
+          end
+        end
+      else
+        (self.x_position - 1).downto(new_x + 1) do |x_current|
+          if occupied?(x_current, self.y_position) == false
+            checked_squares_array << [x_current, self.y_position]
+          end
+        end
+      end
+    elsif direction == 'vertical'
+      if new_y > self.y_position
+        (self.y_position + 1).upto(new_y - 1) do |y_current|
+          if occupied?(self.x_position, y_current) == false
+            checked_squares_array << [self.x_position, y_current]
+          end
+        end
+      else
+        (self.y_position - 1).downto(new_y + 1) do |y_current|
+          if occupied?(self.x_position, y_current) == false
+            checked_squares_array << [self.x_position, y_current]
+          end
+        end
+      end
+    elsif direction == 'diagonal'
+      if new_x > self.x_position && new_y > self.y_position
+        (self.x_position + 1).upto(new_x - 1) do |x_current|
+          y_current = self.y_position + (x_current - self.x_position)
+          if occupied?(x_current, y_current) == false
+            checked_squares_array << [x_current, y_current]
+          end
+        end
+      elsif new_x < self.x_position && new_y > self.y_position
+        (self.x_position - 1).downto(new_x + 1) do |x_current|
+          y_current = self.y_position + (x_current - self.x_position).abs
+          if occupied?(x_current, y_current) == false
+            checked_squares_array << [x_current, y_current]
+          end
+        end
+      elsif new_x > self.x_position && new_y < self.y_position
+        (self.x_position + 1).upto(new_x - 1) do |x_current|
+          y_current = self.y_position - (x_current - self.x_position)
+          if occupied?(x_current, y_current) == false
+            checked_squares_array << [x_current, y_current]
+          end
+        end
+      else
+        (self.x_position - 1).downto(new_x + 1) do |x_current|
+          y_current = self.y_position - (x_current - self.x_position).abs
+          if occupied?(x_current, y_current) == false
+            checked_squares_array << [x_current, y_current]
+          end
+        end
+      end
+    end
+    return checked_squares_array
+  end
+
   def is_obstructed?(new_x, new_y)
     direction = move_direction(new_x, new_y)
     if direction == 'horizontal'
@@ -86,14 +164,23 @@ class Piece < ApplicationRecord
     if opposing_piece.present? && opposing_piece.color != self.color
       opposing_piece.update_attributes(x_position: nil, y_position: nil, captured: true)
     elsif opposing_piece.present?
-      return 'invalid move'
+      return false
     end
+    
     if self.type == "Pawn" && self.en_passant?(x,y) == true
       opposing_pawn = game.pieces.find_by(:x_position => x, :y_position => self.y_position, :type => "Pawn")
       opposing_pawn.update_attributes(x_position: nil, y_position: nil, captured: true)
     end
-    self.update_attributes(x_position: x, y_position: y)
-    self.increment!(:moves)
+    
+    self.transaction do
+      self.update_attributes(x_position: x, y_position: y)
+      self.increment!(:moves)
+      if game.check?(self.color)
+        fail ActiveRecord::Rollback
+        return false
+      end
+    end
+   
     if castling_queenside?(x, y) == true 
      rook = game.pieces.find_by(x_position: 1, y_position: y, type: "Rook")
      rook.update_attributes(x_position: 4, y_position: y)
@@ -117,6 +204,12 @@ class Piece < ApplicationRecord
   def rook_at(x,y) #sees if there is a rook there that hasnt moved
     game.pieces.where(:x_position => x, :y_position => y, :type => "Rook", :moves => 0).present?
   end
+
+  def capturable?(color)
+    piece_being_checked = game.pieces.find_by(x_position: self.x_position, y_position: self.y_position)
+    enemy_pieces = game.pieces.where.not(color: color, x_position: nil, y_position: nil)
+    enemy_pieces.any? { |piece| piece.can_move_to?(piece_being_checked.x_position, piece_being_checked.y_position) }
+  end
   
   def white?
     if self.color == "white"
@@ -127,5 +220,3 @@ class Piece < ApplicationRecord
   end
 
 end
-
-
