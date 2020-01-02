@@ -31,19 +31,23 @@ class GamesController < ApplicationController
 
   def destroy
     @game = Game.find(params[:id])
+    valid_user
     @game.destroy
     redirect_to games_path
   end
 
   def forfeit
-    @game = Game.find_by_id(params[:id])
-    if current_user.id == @game.white_player_user_id
-      @game.update_attributes(winner_user_id: @game.black_player_user_id, loser_user_id: @game.white_player_user_id, state: "end", turn: "end")
+    @game = Game.find_by(params[:id])
+    black_player = @game.black_user_id
+    white_player = @game.white_user_id
+    
+    if current_user.id == white_player
+      winner_id = black_player
     else
-      @game.update_attributes(winner_user_id: @game.white_player_user_id, loser_user_id: @game.black_player_user_id, state: "end", turn: "end")
+      winner_id = white_player
     end
+    @game.update_attributes(winner_user_id: winner_id, loser_user_id: current_user.id, state: "end", turn: 0)
     redirect_to games_path
-
   end
 
   def index
@@ -65,4 +69,9 @@ class GamesController < ApplicationController
     params.require(:game).permit(:name, :white_user_id, :black_user_id)
   end
   
+  def valid_user
+    if @game.white_user_id != current_user.id || @game.black_user_id != current_user.id
+      return render plain: 'Not Allowed', status: :forbidden
+    end
+  end
 end

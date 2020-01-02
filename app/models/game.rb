@@ -81,5 +81,6 @@ class Game < ApplicationRecord
     enemy_pieces = self.pieces.where.not(color: color, x_position: nil, y_position: nil)
     enemy_pieces.any?{ |piece| piece.can_move_to?(king.x_position, king.y_position) }
   end
+  
 end
 
