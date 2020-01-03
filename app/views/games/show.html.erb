@@ -2,7 +2,7 @@
   <% flash.each do |key, value| %>
     <div class="alert alert-<%= key %>"><%= value %></div>
   <% end %>
-  <h1>Good Luck!</h1>
+  <h1><%= @game.name %></h1>
   <div>
     <% turn_user = User.find_by(id: @game.turn) %>
     <% if turn_user == current_user %>
@@ -26,6 +26,7 @@
       </tr>
     <% end %>
   </table>
+  <br>
   <br>
   <%= link_to 'Forefeit Game', game_forfeit_path(@game), method: :put, data: {confirm: 'Are you sure you want to forfeit?'},class: 'btn btn-secondary' %>
 </div>

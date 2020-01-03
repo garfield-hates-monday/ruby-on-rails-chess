@@ -54,6 +54,7 @@ class GamesController < ApplicationController
     @open_games = Game.where(black_user_id: nil).where.not(white_user_id: current_user.id).first(15)
     @active_games = Game.where.not(white_user_id: nil).where.not(black_user_id: nil).where(winner_user_id: nil)
     @unmatched_games = Game.where(black_user_id: nil).where(white_user_id: current_user.id)
+    @completed_games = Game.where(black_user_id: current_user.id).where(state: "end") || Game.where(white_user_id: current_user.id).where(state: "end") 
   end
 
   def update

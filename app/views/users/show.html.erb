@@ -11,4 +11,41 @@
     </div>
   </div>
   <div class="clear"></div>
+  <div>
+    <table class="table">
+      <tr class="heading">
+        <th>#</th>
+        <th>White User</th>
+        <th>Black User</th>
+      </tr>
+      <% if @active_games %>
+        <% @active_games.each do |game| %>
+          <tr>
+            <td><%= game.id %></td>
+            <td><%= game.white_user_id %></td>
+            <td><%= game.black_user_id %></td>
+            <td><%= link_to 'View Game', game_path(game.id), class: 'button' %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+    <table class="table">
+      <tr class="heading">
+        <th>#</th>
+        <th>White User</th>
+        <th>Black User</th>
+        <th>Winner</th>
+      </tr>
+      <% if @completed_games %>
+        <% @completed_games.each do |game| %>
+          <tr>
+            <td><%= game.id %></td>
+            <td><%= game.white_user_id %></td>
+            <td><%= game.black_user_id %></td>
+            <td><%= game.winner_user_id%></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
 </div>
