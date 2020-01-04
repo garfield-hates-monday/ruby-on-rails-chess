@@ -8,6 +8,18 @@
       <h1>User Dashboard</h1>
       <h1><%= @user.email %></h1>
       <h3>Member Since: <%= @user.created_at.strftime("%B %d, %Y") %></h3>
+      <table class="table">
+        <tr class="heading">
+          <th>Wins</th>
+          <th>Losses</th>
+          <th>Draws</th>
+        </tr>
+        <tr>
+          <td><%= @user_wins %></td>
+          <td><%= @user_losses %></td>
+          <td><%= @user_draws %></td>
+        </tr>
+      </table>
     </div>
   </div>
   <br>

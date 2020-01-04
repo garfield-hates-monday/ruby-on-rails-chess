@@ -15,8 +15,6 @@
           <% if game.white_user_id == current_user.id %>
             Opponent: <%= black_player.email %>
             <br>
-            Status: <%= game.state %>
-            <br>
             <% if turn_user == current_user %>
               Turn: Your Turn
             <% else %>
@@ -53,19 +51,29 @@
           <h3><%= game.name %></h3>
           <h4>Game id: <%= game.id %></h4>  
           <% white_player = User.find_by(id: game.white_user_id) %>
+          <% white_wins = white_player.games.where(winner_user_id: white_player).count %>
+          <% white_losses = white_player.games.where(loser_user_id: white_player).count %>
+          <% white_draws = white_player.games.where(state: "stalemate").count %>
           <%= white_player.email %>
           <br>
-          <% if white_player.wins == nil %>
+          <% if white_wins == nil %>
             Wins: 0
           <% else %>
-            Wins: <%= white_player.wins %>
+            Wins: <%= white_wins %>
           <% end %>
           <br>
-          <% if white_player.losses == nil %>
+          <% if white_losses == nil %>
             Losses: 0
           <% else %>
-            Losses: <%= white_player.losses %>
+            Losses: <%= white_losses %>
           <% end %>
+          <br>
+          <% if white_draws == nil %>
+            Draws: 0
+          <% else %>
+            Draws: <%= white_draws %>
+          <% end %>
+
           <div class="float-right">
           <%= simple_form_for game, :method => :put do |f| %>
             <%= f.input :black_user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
