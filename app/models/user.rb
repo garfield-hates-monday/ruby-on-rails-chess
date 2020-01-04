@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many :games
+  has_many :games, ->(user) { unscope(where: :user_id).where("black_user_id = ? OR white_user_id = ?", user.id, user.id) }, class_name: 'Game'
 
   # OmniAuth Helper Function
   def self.from_omniauth(auth)

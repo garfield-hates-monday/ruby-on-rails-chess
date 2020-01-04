@@ -1,5 +1,6 @@
 class Game < ApplicationRecord
-  belongs_to :user, optional: true
+  belongs_to :black_user, class_name: 'User', foreign_key: 'black_user_id', optional: true
+  belongs_to :white_user, class_name: 'User', foreign_key: 'white_user_id', optional: true
   has_many :pieces, dependent: :destroy
   after_create :populate_game
 
