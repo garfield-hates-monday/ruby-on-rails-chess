@@ -1,9 +1,9 @@
 <h1 class="avail-games col-4 offset-4">List of Available Games</h1>
 <br>
 <div class="booyah-box offset-1 col-10">
-  <h2 class="avail-games">Active Games</h2>
-  <br>
-  <% if @active_games.present? %>
+  <% if @active_games.present? %>  
+    <h2 class="avail-games">Active Games</h2>
+    <br>
     <div class="row">
       <% @active_games.each do |game| %>
         <div class="booyah-box col-md-6 col-sm-12">
