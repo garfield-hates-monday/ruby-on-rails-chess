@@ -8,7 +8,60 @@
       <h1>User Dashboard</h1>
       <h1><%= @user.email %></h1>
       <h3>Member Since: <%= @user.created_at.strftime("%B %d, %Y") %></h3>
+      <table class="table">
+        <tr class="heading">
+          <th>Wins</th>
+          <th>Losses</th>
+          <th>Draws</th>
+        </tr>
+        <tr>
+          <td><%= @user_wins %></td>
+          <td><%= @user_losses %></td>
+          <td><%= @user_draws %></td>
+        </tr>
+      </table>
     </div>
   </div>
-  <div class="clear"></div>
+  <br>
+  <div>
+    <h2>Active Games</h2>
+    <table class="table">
+      <tr class="heading">
+        <th>#</th>
+        <th>White User</th>
+        <th>Black User</th>
+        <th>Game Link</th>
+      </tr>
+      <% if @active_games %>
+        <% @active_games.each do |game| %>
+          <tr>
+            <td><%= game.id %></td>
+            <td><%= game.white_user_id %></td>
+            <td><%= game.black_user_id %></td>
+            <td><%= link_to 'View Game', game_path(game.id), class: 'button' %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+    <h2>Completed Games</h2>
+    <table class="table">
+      <tr class="heading">
+        <th>#</th>
+        <th>White User</th>
+        <th>Black User</th>
+        <th>Winner</th>
+      </tr>
+      <% if @completed_games %>
+        <% @completed_games.each do |game| %>
+          <tr>
+            <td><%= game.id %></td>
+            <td><%= game.white_user_id %></td>
+            <td><%= game.black_user_id %></td>
+            <td><%= game.winner_user_id%></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+    <br>
+  </div>
 </div>

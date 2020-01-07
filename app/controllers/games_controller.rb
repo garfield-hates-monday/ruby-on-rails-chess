@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :index, :update]
+  before_action :authenticate_user!, only: [:new, :create, :index, :update, :destroy, :forfeit]
 
   def new
     @game = Game.new
@@ -33,9 +33,32 @@ class GamesController < ApplicationController
 
   end
 
+  def destroy
+    @game = Game.find(params[:id])
+    valid_user
+    @game.destroy
+    redirect_to games_path
+  end
+
+  def forfeit
+    @game = Game.find_by(params[:id])
+    black_player = @game.black_user_id
+    white_player = @game.white_user_id
+    
+    if current_user.id == white_player
+      winner_id = black_player
+    else
+      winner_id = white_player
+    end
+    @game.update_attributes(winner_user_id: winner_id, loser_user_id: current_user.id, state: "end", turn: 0)
+    redirect_to games_path
+  end
+
   def index
     @open_games = Game.where(black_user_id: nil).where.not(white_user_id: current_user.id).first(15)
     @active_games = Game.where.not(white_user_id: nil).where.not(black_user_id: nil).where(winner_user_id: nil)
+    @unmatched_games = Game.where(black_user_id: nil).where(white_user_id: current_user.id)
+    @completed_games = Game.where(black_user_id: current_user.id).where(state: "end") || Game.where(white_user_id: current_user.id).where(state: "end") 
   end
 
   def update
@@ -51,4 +74,9 @@ class GamesController < ApplicationController
     params.require(:game).permit(:name, :white_user_id, :black_user_id)
   end
   
+  def valid_user
+    if @game.white_user_id != current_user.id || @game.black_user_id != current_user.id
+      return render plain: 'Not Allowed', status: :forbidden
+    end
+  end
 end

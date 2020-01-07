@@ -1,29 +1,37 @@
 <h1 class="avail-games col-4 offset-4">List of Available Games</h1>
 <br>
 <div class="booyah-box offset-1 col-10">
-  <h2 class="avail-games">Active Games</h2>
-  <br>
-  <% if @active_games.present? %>
+  <% if @active_games.present? %>  
+    <h2 class="avail-games">Active Games</h2>
+    <br>
     <div class="row">
       <% @active_games.each do |game| %>
         <div class="booyah-box col-md-6 col-sm-12">
+          <h3><%= game.name %></h3>
+          <h4>Game id: <%= game.id %></h4>
+          <% turn_user = User.find_by(id: game.turn) %>
+          <% black_player = User.find_by(id: game.black_user_id) %>
+          <% white_player = User.find_by(id: game.white_user_id) %>
           <% if game.white_user_id == current_user.id %>
-            <% black_player = User.find_by(id: game.black_user_id) %>
             Opponent: <%= black_player.email %>
             <br>
-            Status: <%= game.state %>
-            <br>
-            Turn: <%= game.turn %>
+            <% if turn_user == current_user %>
+              Turn: Your Turn
+            <% else %>
+              Turn: <%= turn_user.email %>
+            <% end %>
             <br>
             <%= link_to 'Go to Game', game_path(game), class: 'btn btn-primary float-right' %>  
           <% else %>
-            <% white_player = User.find_by(id: game.white_user_id) %>
             Opponent: <%= white_player.email %>
             <br>
             Status: <%= game.state %>
             <br>
-            Turn: <%= game.turn %>
-            <br>
+            <% if turn_user == current_user %>
+              Turn: Your Turn
+            <% else %>
+              Turn: <%= turn_user.email %>
+            <% end %>
             <%= link_to 'Go to Game', game_path(game), class: 'btn btn-primary float-right' %>
           <% end %>
         </div>
@@ -33,27 +41,39 @@
 </div>
 <br>
 <br>
-<div class="booyah-box offset-1 col-10">
-  <h2 class="avail-games">Open Games</h2>
-  <br>
-  <% if @open_games.present? %>
+<% if @open_games.present? %>
+  <div class="booyah-box offset-1 col-10">
+    <h2 class="avail-games">Open Games</h2>
+    <br>
     <div class="row">
       <% @open_games.each do |game| %>
-        <div class="booyah-box col-md-6 col-sm-12">  
+        <div class="booyah-box col-md-6 col-sm-12">
+          <h3><%= game.name %></h3>
+          <h4>Game id: <%= game.id %></h4>  
           <% white_player = User.find_by(id: game.white_user_id) %>
+          <% white_wins = white_player.games.where(winner_user_id: white_player).count %>
+          <% white_losses = white_player.games.where(loser_user_id: white_player).count %>
+          <% white_draws = white_player.games.where(state: "stalemate").count %>
           <%= white_player.email %>
           <br>
-          <% if white_player.wins == nil %>
+          <% if white_wins == nil %>
             Wins: 0
           <% else %>
-            Wins: <%= white_player.wins %>
+            Wins: <%= white_wins %>
           <% end %>
           <br>
-          <% if white_player.losses == nil %>
+          <% if white_losses == nil %>
             Losses: 0
           <% else %>
-            Losses: <%= white_player.losses %>
+            Losses: <%= white_losses %>
           <% end %>
+          <br>
+          <% if white_draws == nil %>
+            Draws: 0
+          <% else %>
+            Draws: <%= white_draws %>
+          <% end %>
+
           <div class="float-right">
           <%= simple_form_for game, :method => :put do |f| %>
             <%= f.input :black_user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
@@ -63,9 +83,24 @@
         </div>
       <% end %>
     </div>
-  <% end %>
+  </div>
+<% end %>
+<br>
+<br>
+<% if @unmatched_games.present? %>
+  <div class="booyah-box offset-1 col-10">
+    <h2 class="avail-games">Unmatched Games</h2>
+    <br>
+    <div class="row">
+      <% @unmatched_games.each do |game| %>
+        <div class="booyah-box col-md-6 col-sm-12">  
+          <h3><%= game.name %></h3>
+          <h4>Game id: <%= game.id %></h4>
+          <div class="float-right">
+          <%= link_to 'Delete Game', game_path(game), method: :delete, data: {confirm: 'Are you sure you want to delete this game?'},class: 'btn btn-danger' %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
-</div>
-<br>
-<br>
+<% end %>
