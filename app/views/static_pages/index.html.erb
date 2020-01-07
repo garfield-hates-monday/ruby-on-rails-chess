@@ -2,6 +2,8 @@
   <center>
     <h1> Garfield Hates Mondays</h1>
     <br />
-    <%= image_tag("garfield.jpg") %>
+    <%= link_to games_path do %>
+      <%= image_tag "garfield.jpg", class: "img-fluid garfield" %>
+    <% end %>
   </center>
 </div>
