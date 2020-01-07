@@ -36,8 +36,8 @@
         <% @active_games.each do |game| %>
           <tr>
             <td><%= game.id %></td>
-            <td><%= game.white_user_id %></td>
-            <td><%= game.black_user_id %></td>
+            <td><%= User.find(game.white_user_id).email %></td>
+            <td><%= User.find(game.black_user_id).email %></td>
             <td><%= link_to 'View Game', game_path(game.id), class: 'button' %></td>
           </tr>
         <% end %>
@@ -55,9 +55,9 @@
         <% @completed_games.each do |game| %>
           <tr>
             <td><%= game.id %></td>
-            <td><%= game.white_user_id %></td>
-            <td><%= game.black_user_id %></td>
-            <td><%= game.winner_user_id%></td>
+            <td><%= User.find(game.white_user_id).email %></td>
+            <td><%= User.find(game.black_user_id).email %></td>
+            <td><%= User.find(game.winner_user_id).email %></td>
           </tr>
         <% end %>
       <% end %>
