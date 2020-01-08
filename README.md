@@ -14,7 +14,7 @@ This is the Home page:
 
 This is the Games page where you can see your active games and join unmatched games:
 
-![Games Screenshot](./app/assets/images/chess_screenshot2.png)
+![Games Screenshot](./app/assets/images/chess_screenshot6.png)
 ![Games Screenshot2](./app/assets/images/chess_screenshot3.png)
 
 This is the Gameplay page where you play your game:
