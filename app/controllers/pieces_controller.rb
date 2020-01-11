@@ -22,7 +22,7 @@ class PiecesController < ApplicationController
       flash[:warning] = "Invalid move! Your piece can't move in this way!"
     else
       @piece.move_to!(params[:x_position].to_i, params[:y_position].to_i)
-      @piece.reload
+      #@piece.reload
       if @piece.x_position == @original_x && @piece.y_position == @original_y
         flash[:warning] = "This move will put your piece in check!"
       else
@@ -30,7 +30,7 @@ class PiecesController < ApplicationController
         turn_update
       end
     end
-    redirect_to game_url(@game)
+    #redirect_to game_url(@game)
   end
 
   def correct_turn?

@@ -55,9 +55,12 @@
         // alert( 'The square with ID ' + id + ' was dropped onto me!'); //just to test that the numbers are pulling correctly
         $.ajax({
           type: 'PUT',   // update to the piece
-           url: '/pieces/' + id,
-           beforeSend: function(xhr) {xhr.setRequestHeader("X-CSRF-Token", $('meta[name="csrf-token"]').attr("content"))},
-           data: { id: id, x_position: x, y_position: y }, //should update to the new y position
+          url: '/pieces/' + id,
+          beforeSend: function(xhr) {xhr.setRequestHeader("X-CSRF-Token", $('meta[name="csrf-token"]').attr("content"))},
+          data: { id: id, x_position: x, y_position: y }, //should update to the new y position
+          success: function(data){
+            location.reload();
+          }
         });
         
       }
