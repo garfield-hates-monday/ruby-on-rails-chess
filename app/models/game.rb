@@ -4,6 +4,8 @@ class Game < ApplicationRecord
   has_many :pieces, dependent: :destroy
   after_create :populate_game
   after_rollback :check_yourself_error
+  
+
 
   def reset_pieces_player
     pieces.where(color: "black").update_all(user_id: black_user_id)

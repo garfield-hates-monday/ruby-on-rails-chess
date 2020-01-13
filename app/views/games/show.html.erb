@@ -30,7 +30,33 @@
   <br>
   <%= link_to 'Forefeit Game', game_forfeit_path(@game), method: :put, data: {confirm: 'Are you sure you want to forfeit?'},class: 'btn btn-secondary' %>
 </div>
+<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDOqkGuuxcl1DIkf761bK4YGn7OTLGI6qc",
+    authDomain: "chess-app-a4d8a.firebaseapp.com",
+    databaseURL: "https://chess-app-a4d8a.firebaseio.com",
+    projectId: "chess-app-a4d8a",
+    storageBucket: "",
+  };
 
+  firebase.initializeApp(config);
+
+  // Get a reference to the database service
+
+  var database = firebase.database();
+  var moveRef = database.ref('games/' + <%= @game.id %> + '/pieces');
+  moveRef.on('value', function(snapshot) {
+    var values = snapshot.val();
+    var ids = Object.keys(values);
+    var lastId = ids[ids.length - 1];
+    var lastMove = values[lastId];
+    if(lastMove.timestamp > <%= Time.now.to_i - 2 %>) {
+      location.reload();
+    }
+  });
+</script>
 <script>
     $(document).ready(function(){
       $(".draggable").draggable({
