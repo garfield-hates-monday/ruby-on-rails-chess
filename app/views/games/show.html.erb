@@ -34,10 +34,10 @@
 <script>
   // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyDOqkGuuxcl1DIkf761bK4YGn7OTLGI6qc",
-    authDomain: "chess-app-a4d8a.firebaseapp.com",
-    databaseURL: "https://chess-app-a4d8a.firebaseio.com",
-    projectId: "chess-app-a4d8a",
+    apiKey: ENV["FIREBASE_API_KEY"],
+    authDomain: ENV["FIREBASE_DOMAIN"],
+    databaseURL: ENV["FIREBASE_URL"],
+    projectId: ENV["FIREBASE_PROJECT"],
     storageBucket: "",
   };
 

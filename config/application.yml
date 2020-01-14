@@ -9,3 +9,8 @@
 # production:
 #   stripe_api_key: sk_live_EeHnL644i6zo4Iyq4v1KdV9H
 #   stripe_publishable_key: pk_live_9lcthxpSIHbGwmdO941O1XVU
+
+FIREBASE_API_KEY: "AIzaSyDOqkGuuxcl1DIkf761bK4YGn7OTLGI6qc",
+FIREBASE_DOMAIN: "chess-app-a4d8a.firebaseapp.com",
+FIREBASE_URL: "https://chess-app-a4d8a.firebaseio.com",
+FIREBASE_PROJECT: "chess-app-a4d8a"
